@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+body {
+    font-size: 14px; 
+    background: #E8F2FB; 
+    color: #333; 
+    MARGIN: 80px;
+    background-repeat: repeat-x; 
+    background-image:url(bg.jpg); 
+    background-color:#8db9d2;
+}
+
+tr {
+    font-size: 14px;
+}
+
+.bt { 
+    font-size:24px; 
+    color:#FFFFFF; 
+    text-align:center; 
+    font-weight:bold;
+}
+
+.btn {
+	BORDER-RIGHT: #0033cc 1px solid; 
+    BORDER-TOP: #00ccff 1px solid; 
+    FONT-SIZE: 12px; 
+    BORDER-LEFT: #00ccff 1px solid; 
+    CURSOR: hand; 
+    COLOR: #ffffff; 
+    BORDER-BOTTOM: #0033cc 1px solid; 
+    FONT-FAMILY: "宋体"; 
+    BACKGROUND-COLOR: #0099ff;
+}
+
+a:link {
+	color: #333;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: 3366FF;
+	text-decoration: underline;
+}

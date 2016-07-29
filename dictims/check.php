@@ -1,44 +1,53 @@
 <?php 
 include('images/conn.php');
 
-if ($_REQUEST['action'] == 'login') {
+//echo("<script>alert('action=".$_REQUEST['action']."');window.close();</script>");
+//exit;
+
+if (!empty($_GET['action']) and $_REQUEST['action'] == 'login') {
     $checkcode = str_replace("'", "", trim($_REQUEST['checkcode']));
+
     if ($checkcode == "") {
-       echo("<script>alert('验证码不能为空！');window.close();</script>");
+       die("<script>alert('验证码不能为空！');location.href='index.php'</script>");
     }
-    if ($_SESSION['checkcode'] == "") {
-       echo("<script>alert('验证码失效，请重新输入！');window.close();</script>");
+    if (empty($_SESSION['checkcode']) or $_SESSION['checkcode'] == "") {
+       die("<script>alert('验证码失效，请重新输入！');location.href='index.php'</script>");
     }
-    if ($checkcode != $_SESSION['checkcode']) {
-        echo("<script>alert('您输入的验证码与系统产生的不一致，请重新输入！');window.close();</script>");
+    if (!empty($_SESSION['checkcode']) and $checkcode != $_SESSION['checkcode']) {
+        die("<script>alert('您输入的验证码与系统产生的不一致，请重新输入！');location.href='index.php'</script>");
     }
     $sid = $_REQUEST['sid'];
     $idcard = $_REQUEST['idcard'];
     $pws = $_REQUEST['pws'];
 }
 
-if (Instr(Sid,"or")<>0 or Instr(Idcard,"or")<>0 or Instr(Pws,"or")<>0 or Instr(Sid,"and")<>0 or Instr(Idcard,"and")<>0 or Instr(Pws,"and")<>0) {
-    echo("<script>alert('没事别搞人家后台，谢谢！<br>否则一切后果自负！');window.close();</script>");
+//echo("<script>alert('sid=".$sid.", idcard=".$idcard.", pws=".$pws."');window.close();</script>");
+
+if (strpos($sid, "or") !== false or strpos($idcard, "or") !== false or strpos($pws, "or") !== false or 
+    strpos($sid, "and") !== false or strpos($idcard, "and") !== false or strpos($pws, "and") !== false) {
+    echo("<script>alert('没事别搞人家后台，谢谢！\\n否则一切后果自负！');window.close();</script>");
 } else {
     if ($sid != "") {
-        $sql = "select * from staff where sid='" . trim(Sid) . "' and Pws='" . trim(Pws) . "' "
+        $sql = "select * from staff where sid='" . trim($sid) . "' and pws='" . trim($pws) . "' ";
     } else {
-        $sql = "select * from staff where idcard='" . trim(Idcard) . "' and Pws='" . trim(Pws) . "' "
+        $sql = "select * from staff where idcard='" . trim($idcard) . "' and pws='" . trim($pws) . "' ";
     }
     $result = mysql_query($sql, $con);
-    $rs = mysql_fetch_assoc($result);
-    if rs.eof then
-       echo("<SCRIPT language=JavaScript>alert('对不起，工号或身份证号不匹配!\n \n请检查，返回重新输入！');");
-       echo("location.href='index.asp'</SCRIPT>");
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
     } else {
-       $_SESSION['id'] = $rs['id']
-       $_SESSION['userid'] = $rs['sid']
-       $_SESSION['username'] = $rs['sname']
-       response.redirect "search.asp"
+        $rs = null;
+    }
+    if (!$rs) {
+        echo("<script language='javascript'>alert('对不起，工号或身份证号不匹配!\\n \\n请检查，返回重新输入！');");
+        echo("location.href='index.php'</script>");
+    } else {
+       $_SESSION['id'] = $rs['id'];
+       $_SESSION['userid'] = $rs['sid'];
+       $_SESSION['username'] = $rs['sname'];
+       header('location:search.php');
+       exit;
 	}
-    rs.close
-    set rs=nothing
-    conn.close
-    set conn=nothing
+    mysql_close($con);
 }
 ?>

@@ -50,19 +50,19 @@ function check(){
                     <tr>
                         <td align="right" height="30">员 工 号：</td>
                         <td height="30">
-                            <input id="sid" maxLength="10" size="18" name="sid"> 
+                            <input id="sid" maxLength="10" size="18" name="sid" value="YG001"> 
                         </td>
 					</tr>
                     <tr>
                         <td align="right" height="30">身份证号：</td>
                         <td height="30">
-                            <input id="idcard" maxlength="18" size="18" name="idcard"> 
+                            <input id="idcard" maxlength="18" size="18" name="idcard" value="34010219810401021X"> 
                         </td>
 					</tr>
                     <tr>
                         <td align="right" height="30">查询密码：</td>
                         <td height="30">
-                            <input name="pws" type="password" id="pws" size="18" maxlength="16"> 
+                            <input name="pws" type="password" id="pws" size="18" maxlength="16" value="123456"> 
                         </td>
 					</tr>
                     <tr>

@@ -46,7 +46,7 @@ rs("addtime")=Request("addtime")
  rs.update
  rs.close
 set rs=nothing
- Response.Redirect "?action=list"
+ header('location:?action=list');
 end if
 %>
 <html>

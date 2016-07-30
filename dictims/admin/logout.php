@@ -1,4 +1,8 @@
-<%
-session.Abandon()
-response.redirect "login.php"
-%>
+<?php
+if (!session_id()) {
+    session_start();
+    session_unset();
+    session_destroy();
+}
+header('location:login.php');
+?>

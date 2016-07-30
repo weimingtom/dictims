@@ -14,7 +14,7 @@ window.location = params ;
 if Request("wor")="del" then
 sql="delete from Admin where id="&Request("id")
 Conn.execute(sql)
-Response.Redirect "?action=list"
+header('location:?action=list');
 end if
 %>
 <%
@@ -39,11 +39,11 @@ else
    rs.open sql,conn,1,2  
 end if
  rs("Username")=Username
- rs("Password")=md5(Password)
+ rs("Password")=md5_str(Password)
  rs.update 		'更新数据表记录
  rs.close
 set rs=nothing
- Response.Redirect "?action=list"
+  header('location:?action=list');
 end if
 %>
 <html>

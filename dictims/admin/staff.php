@@ -14,7 +14,7 @@ end if
 IF Request("work")="del" Then
 sql="delete from Staff where id="&Request("id")
 Conn.execute(sql)
-Response.Redirect "?action=list"
+header('location:?action=list');
 End IF
 %>
 <%
@@ -63,7 +63,7 @@ rs("Comment")=Request("Comment")
  rs.update
  rs.close
 set rs=nothing
- Response.Redirect "?action=list"
+  header('location:?action=list');
 end if
 %>
 <html>

@@ -1,11 +1,17 @@
-<%
-'session.timeout=6000
-'Server.ScriptTimeOut=2000
+<?php
+$dbname = 'dictims';
+$dbuser = 'root';
+$dbpass = '';
+$dbhost = 'localhost';
 
-dim conn,rs,sysConfig,db
-db="../data/Xiao5u.mdb" '数据库文件位置
-set conn=server.createobject("adodb.connection")
-conn.open "driver={Microsoft Access Driver (*.mdb)};pwd=Xiao5u;dbq=" &Server.MapPath(""&db&"")
+$con = mysql_connect($dbhost, $dbuser, $dbpass) or die("数据库连接出错，请检查连接字串。"); //提示错误
 
-Set rs = Server.CreateObject("ADODB.Recordset")
-%>
+// mysql_query("SET NAMES 'GBK'", $con);
+mysql_query("SET NAMES 'UTF8'", $con); 
+mysql_query("SET CHARACTER SET UTF8", $con); 
+mysql_query("SET CHARACTER_SET_RESULTS=UTF8'", $con); 
+
+mysql_select_db($dbname, $con) or die("数据库连接出错，请检查连接字串。"); //提示错误
+
+if (!session_id()) session_start(); //Undefined variable: _SESSION
+?>

@@ -1,12 +1,3 @@
-<% 
-dim rndnum,verifycode
-Randomize
-Do While Len(rndnum)<4
-num1=CStr(Chr((57-48)*rnd+48))
-rndnum=rndnum&num1
-loop
-session("verifycode")=rndnum
-%>
 <!DOCtYPE html PUBLIC "-//W3C//Dtd html 4.01 transitional//EN" "http://www.w3c.org/tr/1999/REC-html401-19991224/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -43,7 +34,7 @@ return true;
 </head>
 <body>
 <table cellSpacing=1 cellPadding=5 width=460 align=center bgColor=#b9b0a9 border=0>
- <FORM action="check.php?action=login" method=post onSubmit="return chk(this)">
+ <FORM action="check.php?action=login" method="post" onsubmit="return chk(this)">
   <tbody>
   <tr>
     <td vAlign=top bgColor=#ffffff>
@@ -61,15 +52,15 @@ return true;
                     <tbody>
                     <tr>
                       <td align=right width=60 height=30>用户名：</td>
-                      <td height=30><INPUt id=admin_name name=admin_name> </td></tr>
+                      <td height=30><input id="admin_name" name="admin_name" value="admin"> </td></tr>
                     <tr>
                       <td align=right height=30>密&nbsp;&nbsp;码：</td>
-                      <td height=30><INPUt id=admin_pass type=password name=admin_pass> </td></tr>
+                      <td height=30><input id="admin_pass" type="password" name="admin_pass" value="admin"> </td></tr>
                     <tr>
                       <td align=right>验证码：</td>
-                      <td><INPUt class=pwd id=VerifyCode style="WIDtH: 40px" maxLength=4 name=VerifyCode><img src="yz.php" border='0' onClick="this.src='yz.php'" alt='点击刷新验证码' /></td></tr>
+                      <td><input class=pwd id="verifycode" style="width: 40px" maxlength=4 name="verifycode"><img src="yz.php" border='0' onclick="this.src='yz.php'" alt='点击刷新验证码' /></td></tr>
                     <tr align=middle>
-                      <td colSpan=2 height=40><INPUt class=btn type=submit value="提 交" name=Submit> <input  class=btn type="Reset" value="取 消" name="Reset"></td>
+                      <td colspan=2 height=40><input class="btn" type="submit" value="提 交" name="Submit"> <input  class="btn" type="reset" value="取 消" name="reset"></td>
 					</tr>
 				    </tbody>
 				   </table>

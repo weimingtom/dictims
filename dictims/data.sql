@@ -47,3 +47,58 @@ VALUES
 ("YG003","123456","在职","鲁旺展","342422222221","男","皖合肥","汉","1984-4-1","未婚","无","2003-11","本科","安徽大学","2006-6","安徽省六安市皋城东路7号","15212830890","fw@xiao5u.com","34615101","技术部","技术员","初级","2008-9","","校无忧科技—www.xiao5u.com","2011-4-17");
 
 
+
+
+CREATE TABLE `admin` (   
+  `id` bigint(20) NOT NULL auto_increment,
+  `username` varchar(255),
+  `password` varchar(255),
+  `lastLoginIP` varchar(255),
+  `lastLoginTime` datetime,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+INSERT INTO `admin`
+(`username`,`password`,`lastLoginIP`,`lastLoginTime`)
+VALUES
+("admin","7a57a5a743894a0e","::1","2016-3-15 16:32:17");
+
+CREATE TABLE `salary` (   
+  `id` bigint(20) NOT NULL auto_increment,
+  `syear` varchar(255),
+  `smonth` varchar(255),
+  `sid` varchar(255) COMMENT "工号",
+  `sname` varchar(255) COMMENT "姓名",
+  `basic` varchar(255) COMMENT "基本",
+  `perform` varchar(255) COMMENT "绩效",
+  `jt` varchar(255) COMMENT "津贴",
+  `bt` varchar(255) COMMENT "补贴",
+  `gjj` varchar(255) COMMENT "公积金",
+  `lb` varchar(255) COMMENT "养老保险",
+  `yb` varchar(255) COMMENT "医疗保险",
+  `qt` varchar(255) COMMENT "其他",
+  `stotal` varchar(255) COMMENT "合计",
+  `addtime` varchar(255),
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+INSERT INTO `salary` 
+(`syear`,`smonth`,`sid`,`sname`,`basic`,`perform`,`jt`,`bt`,`gjj`,`lb`,`yb`,`qt`,`stotal`,`addtime`)
+VALUES
+("2013","9","YG001","王韦","1500","800","200","200","300","100","50","100","2800","2013-09-18 10:35:23");
+
+INSERT INTO `salary`
+(`syear`,`smonth`,`sid`,`sname`,`basic`,`perform`,`jt`,`bt`,`gjj`,`lb`,`yb`,`qt`,`stotal`,`addtime`)
+VALUES
+("2013","10","YG002","李儒宝","1000","500","100","100","200","50","50","100","1800","2013-10-18 10:36:51");
+
+INSERT INTO `salary`
+(`syear`,`smonth`,`sid`,`sname`,`basic`,`perform`,`jt`,`bt`,`gjj`,`lb`,`yb`,`qt`,`stotal`,`addtime`)
+VALUES
+("2013","10","YG003","鲁旺展","1200","600","100","100","200","50","50","100","2100","2013-10-18 10:53:49");
+
+INSERT INTO `salary`
+(`syear`,`smonth`,`sid`,`sname`,`basic`,`perform`,`jt`,`bt`,`gjj`,`lb`,`yb`,`qt`,`stotal`,`addtime`)
+VALUES
+("2013","10","YG001","王韦","1500","800","200","200","300","100","50","100","2800","2013-10-18 10:35:23");
+

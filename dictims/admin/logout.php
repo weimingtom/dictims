@@ -1,4 +1,4 @@
 <%
 session.Abandon()
-response.redirect "login.asp"
+response.redirect "login.php"
 %>

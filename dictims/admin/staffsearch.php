@@ -1,12 +1,12 @@
-<!--#include file="inc/right.asp"--> 
-<!--#include file="inc/conn.asp"-->
+<?php include('inc/right.php'); ?> 
+<?php include('inc/conn.php'); ?> 
 <%
 keywords=request("keywords")
 LX=request("LX")
 %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>员工工资信息管理系统</title>
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language=JavaScript>
@@ -29,7 +29,7 @@ window.location = params ;
           <td class="optiontitle" colspan="8">查询职员信息</td>	
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
-          <form name="search" method="get" action="StaffSearch.asp">
+          <form name="search" method="get" action="staffsearch.php">
             <td height="30" colspan="8"> <strong>查找类别：</strong>
 			<select name="LX">
              <option value="Sname">职员姓名</option>
@@ -72,7 +72,7 @@ if keywords<>"" then
           <td><%=rs("Department")%></td>
           <td><%=rs("Jobs")%></td>
           <td><%=rs("State")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="Staff.asp?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="Staff.asp?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('Staff.asp?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="staff.php?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="staff.php?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('staff.php?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
 <%
 rs.MoveNext 
 next

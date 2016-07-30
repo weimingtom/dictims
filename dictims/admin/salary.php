@@ -1,5 +1,5 @@
-<!--#include file="inc/right.asp"--> 
-<!--#include file="inc/conn.asp"-->
+<?php include('inc/right.php'); ?> 
+<?php include('inc/conn.php'); ?> 
 <%
 if Request("wor")="del" then
 id=request("id")
@@ -52,7 +52,7 @@ end if
 <html>
 <head>
 <title>员工工资信息管理系统</title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language=JavaScript type=text/JavaScript>
 function CheckAll(form)
@@ -144,7 +144,7 @@ function check()
     <td bgcolor="#FFFFFF">
 	<%if action="add" then%><BR>
 	<table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-      <form name="add" method="post" action="Salary.asp">
+      <form name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="10"  class="optiontitle"> 添加工资 </td>
         </tr>
@@ -351,7 +351,7 @@ rs.open sql,conn,1,1
 if not rs.eof Then
 %>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-      <form name="add" method="post" action="Salary.asp">
+      <form name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="10"  class="optiontitle"> 修改工资 </td>
         </tr>

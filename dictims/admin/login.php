@@ -11,7 +11,7 @@ session("verifycode")=rndnum
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>员工工资信息管理系统</title>
-<meta http-equiv=Content-type content="text/html; charset=gb2312">
+<meta http-equiv=Content-type content="text/html; charset=utf-8">
 <STYLE type=text/css> 
 body {FONt-SIZE: 12px; BACKGROUND: #E8F2FB; COLOR: #333; MARGIN: 80px;}
 .bt{ font-size:24px; color:#FFFFFF; text-align:center; font-weight:bold}
@@ -43,7 +43,7 @@ return true;
 </head>
 <body>
 <table cellSpacing=1 cellPadding=5 width=460 align=center bgColor=#b9b0a9 border=0>
- <FORM action="check.asp?action=login" method=post onSubmit="return chk(this)">
+ <FORM action="check.php?action=login" method=post onSubmit="return chk(this)">
   <tbody>
   <tr>
     <td vAlign=top bgColor=#ffffff>
@@ -67,7 +67,7 @@ return true;
                       <td height=30><INPUt id=admin_pass type=password name=admin_pass> </td></tr>
                     <tr>
                       <td align=right>验证码：</td>
-                      <td><INPUt class=pwd id=VerifyCode style="WIDtH: 40px" maxLength=4 name=VerifyCode><img src="yz.asp" border='0' onClick="this.src='yz.asp'" alt='点击刷新验证码' /></td></tr>
+                      <td><INPUt class=pwd id=VerifyCode style="WIDtH: 40px" maxLength=4 name=VerifyCode><img src="yz.php" border='0' onClick="this.src='yz.php'" alt='点击刷新验证码' /></td></tr>
                     <tr align=middle>
                       <td colSpan=2 height=40><INPUt class=btn type=submit value="提 交" name=Submit> <input  class=btn type="Reset" value="取 消" name="Reset"></td>
 					</tr>

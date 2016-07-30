@@ -1,5 +1,5 @@
-<!--#include file="inc/right.asp"--> 
-<!--#include file="inc/conn.asp"--> 
+<?php include('inc/right.php'); ?> 
+<?php include('inc/conn.php'); ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -22,7 +22,7 @@ setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString
   </tr>
   <tr style="background-image:url(images/top_bg.gif); height:16px">    
     <td width="40%" style="color:#000000;">欢迎您<b><%=session("admin_name")%></b>! 您现在登录的是<%=sysConfig%>! </td>
-    <td width="60%" align="right" style="color:#000000;"> <a href="logout.asp" target="_parent">退出系统</a></td>
+    <td width="60%" align="right" style="color:#000000;"> <a href="logout.php" target="_parent">退出系统</a></td>
   </tr>
 </table>
 </body>

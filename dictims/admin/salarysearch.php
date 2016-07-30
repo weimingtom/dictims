@@ -1,5 +1,5 @@
-<!--#include file="inc/right.asp"--> 
-<!--#include file="inc/conn.asp"-->
+<?php include('inc/right.php'); ?> 
+<?php include('inc/conn.php'); ?> 
 <%
 Syear=trim(Request("Syear"))
 Smonth=trim(Request("Smonth"))
@@ -8,7 +8,7 @@ keywords=trim(Request("keywords"))
 %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>员工工资信息管理系统</title>
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language=JavaScript>
@@ -31,7 +31,7 @@ window.location = params ;
           <td class="optiontitle" colspan="8">查询职员工资</td>	
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
-          <form name="search" method="get" action="SalarySearch.asp">
+          <form name="search" method="get" action="salarysearch.php">
             <td height="30" colspan="8">
 			请选择查询信息：
 			<select name="Syear">
@@ -104,7 +104,7 @@ if keywords<>"" then
           <td><%=rs("Sid")%></td>
           <td><%=rs("Sname")%></td>
           <td><%=rs("Stotal")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="Salary.asp?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="Salary.asp?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('Salary.asp?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('salary.php?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
 <%
 rs.MoveNext 
 next

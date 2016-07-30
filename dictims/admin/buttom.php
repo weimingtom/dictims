@@ -1,7 +1,7 @@
-<!--#include file="inc/right.asp"--> 
+<?php include('inc/right.php'); ?> 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><%=sysInfo%></title>
 <style type="text/css">
 body {margin: 0px;}

@@ -1,6 +1,6 @@
-<!--#include file="inc/right.asp"--> 
-<!--#include file="inc/conn.asp"-->
-<!--#include file="inc/md5.asp"-->
+<?php include('inc/right.php'); ?>
+<?php include('inc/conn.php'); ?>
+<?php include('inc/md5.php'); ?>   
 <script language=Javascript>
 <!--
 function DoEmpty(params)
@@ -49,7 +49,7 @@ end if
 <html>
 <head>
 <title><%=sysConfig%></title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language="Javascript">
 function check()
@@ -101,7 +101,7 @@ function check()
 	<%if action="add" then%>
 	<br>
       <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-        <form name="add" method="post" action="Admin.asp">
+        <form name="add" method="post" action="admin.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="2"  class="optiontitle">添加用户</td>
         </tr>
@@ -161,7 +161,7 @@ rs.close
 set rs=nothing
 %>
         <tr align="right" bgcolor="#ebf0f7">
-          <td colspan="5"><a href="admin.asp?action=add">添加用户</a></td>
+          <td colspan="5"><a href="admin.php?action=add">添加用户</a></td>
         </tr>
       </table> 
 <%
@@ -174,7 +174,7 @@ if not rs.eof Then
 %>
 <br>
 	  <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-        <form name="add" method="post" action="admin.asp">
+        <form name="add" method="post" action="admin.php">
 		<tr align="center" bgcolor="#F2FDFF">
 		  <td colspan=2  class="optiontitle">修改用户</td>
 		</tr>

@@ -1,54 +1,72 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
-<%
-if Request("wor")="del" then
-id=request("id")
-idArr=split(id,",")
-for i=0 to ubound(idArr)
-sql="delete from Salary where id="&trim(idArr(i))
-conn.execute(sql)
-next
-end if
-%>
-<%
-action=Request("action")
-id=Request("id")
-if action="yes" Then
- set rs=server.createobject("adodb.recordset") 
-if id="" then
-   set rsCheck = conn.execute("select Syear,Smonth,Sname from Salary where Syear='" & trim(Request.Form("Syear")) & "' and Smonth='" & trim(Request.Form("Smonth")) & "' and Sid='" & trim(Request.Form("Sid")) & "'")
-     if not (rsCheck.bof and rsCheck.eof) then
-      response.write "<script language='javascript'>alert(' " & trim(Request.Form("Syear")) & "年" & trim(Request.Form("Smonth")) & "月 " & trim(Request.Form("Sname")) & " 工资已存在，请检查！');history.back(-1);</script>"
-      response.end
-     end if
-   set rsCheck=nothing
-   sql="select * from Salary" 
-   rs.open sql,conn,3,3
-   rs.addnew
-else
-   sql="select * from Salary where id="&id&"" 
-   rs.open sql,conn,1,2
-end if
-rs("Sid")=Request("Sid")
-rs("Sname")=Request("Sname")
-rs("Syear")=Request("Syear")
-rs("Smonth")=Request("Smonth")
-rs("Basic")=Request("Basic")
-rs("Perform")=Request("Perform")
-rs("JT")=Request("JT")
-rs("BT")=Request("BT")
-rs("GJJ")=Request("GJJ")
-rs("LB")=Request("LB")
-rs("YB")=Request("YB")
-rs("QT")=Request("QT")
-rs("Stotal")=Request("Stotal")
-rs("addtime")=Request("addtime")
- rs.update
- rs.close
-set rs=nothing
- header('location:?action=list');
-end if
-%>
+<?php
+if ($_REQUEST["wor"] == "del") {
+	$id = $_REQUEST["id"];
+	$idArr = explode(",", $id);
+	for ($i = 0; $i < count(idArr); $i++) {
+		$sql = "delete from Salary where id=" . trim($idArr[i]);
+		mysql_query($sql, $con);
+	}
+}
+?>
+<?php
+$action = $_REQUEST["action"];
+$id = $_REQUEST["id"];
+if ($action == "yes") {
+ 	//set rs=server.createobject("adodb.recordset") 
+	if ($id == "") {
+		$sql = "select syear,smonth,sname from salary where syear='" .
+			 trim($_REQUEST["syear"]) . 
+			 "' and Smonth='" .
+			 trim($_REQUEST["smonth"]) .
+			 "' and Sid='" . 
+			 trim($_REQUEST["sid"]) .
+			 "'";
+		$result = mysql_query($sql, $con);
+		if ($result !== false) {
+		    $rsCheck = mysql_fetch_assoc($result);
+		} else {
+		    $rsCheck = null;
+		}
+	    if (!rsCheck) {
+	      	die("<script language='javascript'>alert(' " . trim($_REQUEST["syear"]) . "年" . trim($_REQUEST["Smonth"]) . "月 " . trim($_REQUEST["sname"]) . " 工资已存在，请检查！');history.back(-1);</script>");
+	    }
+	   	$sql = "insert into salary (sid,sname,syear,smonth,basic,perform,jt,bt,gjj,lb,yb,qt,stotal,addtime) values (" .
+			"'" . $_REQUEST["sid"] . "'," .
+			"'" . $_REQUEST["sname"] . "'," .
+			"'" . $_REQUEST["syear"] . "'," .
+			"'" . $_REQUEST["smonth"] . "'," .
+			"'" . $_REQUEST["basic"] . "'," .
+			"'" . $_REQUEST["perform"] . "'," .
+			"'" . $_REQUEST["jt"] . "'," .
+			"'" . $_REQUEST["bt"] . "'," .
+			"'" . $_REQUEST["lb"] . "'," .
+			"'" . $_REQUEST["yb"] . "'," .
+			"'" . $_REQUEST["qt"] . "'," .
+			"'" . $_REQUEST["stotal"] . "'," .
+			"'" . $_REQUEST["addtime"] . "')"; 
+	} else {
+	   	$sql = "update salary set " . 
+	   		"sid='" . $_REQUEST["sid"] . "'," .
+			"sname='" . $_REQUEST["sname"] . "'," .
+			"syear='" . $_REQUEST["syear"] . "'," .
+			"smonth='" . $_REQUEST["smonth"] . "'," .
+			"basic='" . $_REQUEST["basic"] . "'," .
+			"perform='" . $_REQUEST["perform"] . "'," .
+			"jt='" . $_REQUEST["jt"] . "'," .
+			"bt='" . $_REQUEST["bt"] . "'," .
+			"lb='" . $_REQUEST["lb"] . "'," .
+			"yb='" . $_REQUEST["yb"] . "'," .
+			"qt='" . $_REQUEST["qt"] . "'," .
+			"stotal='" . $_REQUEST["stotal"] . "'," .
+			"addtime='" . $_REQUEST["addtime"] . " " .
+	   		" where id=" . $id . ""; 
+	}
+	mysql_query($sql, $con);
+	header('location:?action=list');
+}
+?>
 <html>
 <head>
 <title>员工工资信息管理系统</title>
@@ -142,7 +160,9 @@ function check()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr valign="top">
     <td bgcolor="#FFFFFF">
-	<%if action="add" then%><BR>
+<?php 
+if ($action == "add") { 
+?><BR>
 	<table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">
@@ -159,8 +179,8 @@ function check()
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align='right'> 工资年月</td>
-          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<%=Year(now())%>" size="5" maxlength="4" >年
-            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<%=Month(now())%>" size="3" maxlength="2" >月</td>
+          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<?php echo(date("Y")); ?>" size="5" maxlength="4" >年
+            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<?php echo(date("m")); ?>" size="3" maxlength="2" >月</td>
         </tr>
         <tr align='center' bgcolor='#F2FDFF'>
           <td align="right">工资详单</td>
@@ -188,7 +208,7 @@ function check()
 	    </tr>
         <tr bgcolor='#FFFFFF'>
           <td colspan="1" align='right'> 添加时间</td>
-          <td colspan="9"><input name="addtime" type="text" id="addtime" value="<%response.write now()%>" onKeyDown="next()" ></td>
+          <td colspan="9"><input name="addtime" type="text" id="addtime" value="<?php echo(date('Y-m-d H:i:s', time())); ?>" onKeyDown="next()" ></td>
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
@@ -197,9 +217,13 @@ function check()
         </tr>
       </form>
 	  </table>
-	<%end if%>
+<?php
+}
+?>
 <br>
-<%if action="list" then%>
+<?php
+if ($action == "list") { 
+?>
       <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="7"  class="optiontitle">职员工资列表</td>
@@ -213,48 +237,48 @@ function check()
           <td width="20%">合计工资</td>	
 		  <td>执行操作</td>  
         </tr>	
-<%
-sql="select * from Salary order by id desc"
- set rs=server.createobject("adodb.recordset") 
- rs.open sql,conn,1,1
- if not rs.eof then
- proCount=rs.recordcount
-	rs.PageSize=15					  '定义显示数目
-     if not IsEmpty(Request("ToPage")) then
-	    ToPage=CInt(Request("ToPage"))
-		if ToPage>rs.PageCount then
-		   rs.AbsolutePage=rs.PageCount
-		   intCurPage=rs.PageCount
-		elseif ToPage<=0 then
-		   rs.AbsolutePage=1
-		   intCurPage=1
-		else
-		   rs.AbsolutePage=ToPage
-		   intCurPage=ToPage
-		end if
-	 else
-		rs.AbsolutePage=1
-		intCurPage=1
-	 end if
-	 intCurPage=CInt(intCurPage)
-	 For i = 1 to rs.PageSize
-	 if rs.eof then     
-	 Exit For 
-	 end if
-%>
+<?php
+	$sql="select * from salary order by id desc";
+	//set rs=server.createobject("adodb.recordset") 
+	//rs.open sql,conn,1,1
+ 	if (!$rs) {
+ 		$proCount = $rs.recordcount;
+		$rs->pageSize = 15; // 定义显示数目
+	    if (!empty($_REQUEST["ToPage"])) {
+		    $toPage = intval($_REQUEST["ToPage"]);
+			if ($toPage > $rs->pageCount) {
+			   $rs->AbsolutePage = $rs->pageCount;
+			   $intCurPage = $rs->pageCount;
+			} else if (toPage <= 0) {
+			   $rs->absolutePage = 1;
+			   $intCurPage = 1;
+			} else {
+			   $rs->absolutePage = $toPage;
+			   $intCurPage = $toPage;
+			}
+		 } else {
+			$rs->absolutePage = 1;
+			$intCurPage = 1;
+		 }
+		 $intCurPage = intval($intCurPage);
+		 for ($i = 1; i < $rs->pageSize; $i++) {
+			 if (!$rs) {     
+			 	break; 
+			 }
+?>
         <form name="del" action="" method="post">
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
-		  <td><input type="checkbox" name="id" value="<%=rs("id")%>"></td>
-		  <td><%=rs("Syear")%></td>
-          <td><%=rs("Smonth")%></td>
-          <td><%=rs("Sid")%></td>
-          <td><%=rs("Sname")%></td>
-          <td><%=rs("Stotal")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
+		  <td><input type="checkbox" name="id" value="<?php echo($rs["id"]); ?>"></td>
+		  <td><?php echo($rs["syear"]); ?></td>
+          <td><?php echo($rs["smonth"]); ?></td>
+          <td><?php echo($rs["sid"]); ?></td>
+          <td><?php echo($rs["sname"]); ?></td>
+          <td><?php echo($rs["stotal"]); ?></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
-<%
-rs.movenext 
-next
+<?php
+			//rs.movenext 
+		}
 %>
 		<tr bgcolor="#ffffff">
 		  <td colspan="12">&nbsp;&nbsp;
@@ -265,28 +289,33 @@ next
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="7"> 总共：<font color="#ff0000"><%=rs.PageCount%></font>页, <font color="#ff0000"><%=proCount%></font>条工资信息, 当前页：<font color="#ff0000"><%=intCurPage%> </font><%if intCurPage<>1 then%><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<%=intCurPage-1%>">上一页</a>|<% end if
-if intCurPage<>rs.PageCount then %><a href="?action=list&ToPage=<%=intCurPage+1%>">下一页</a>|<a href="?action=list&ToPage=<%=rs.PageCount%>"> 最后页</a><% end if%></span></td>
+          <td colspan="7"> 总共：<font color="#ff0000"><?php echo($rs.pageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>条工资信息, 当前页：<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|
+<?php
+		}
+		if ($intCurPage != $rs.pageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rs.PageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
-<%
-else
-%>
+<?php
+	} else {
+?>
         <tr align="center" bgcolor="#ffffff">
           <td colspan="7">对不起！目前数据库中还没有添加职员工资！</td>
         </tr>
 <%
-rs.close
-set rs=nothing
-end if
+	//rs.close
+	//set rs=nothing
+}
 %>
       </table>
 	  <br>
-<%end if%>
-<%if action="view" then
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Salary where id="&Request("id")
-rs.open sql,conn,1,1
-if not rs.eof Then
+<?php
+}
+?>
+<?php
+if ($action == "view") {
+	//set rs=server.createobject("adodb.recordset") 
+	$sql = "select * from Salary where id=" . $_REQUEST["id"];
+	//rs.open sql,conn,1,1
+	if ($rs) {
 %>
 <br>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
@@ -319,36 +348,37 @@ if not rs.eof Then
         </tr>
         <tr bgcolor='#FFFFFF' align="center">
           <td align="right">所发金额</td>
-          <td><%=rs("Basic")%></td>
-          <td><%=rs("Perform")%></td>
-          <td><%=rs("JT")%></td>
-          <td><%=rs("BT")%></td>
-          <td><%=rs("GJJ")%></td>
-          <td><%=rs("LB")%></td>
-          <td><%=rs("YB")%></td>
-          <td><%=rs("QT")%></td>
-          <td><%=rs("Stotal")%></td>
+          <td><?php echo($rs["basic"]); ?></td>
+          <td><?php echo($rs["perform"]); ?></td>
+          <td><?php echo($rs["jt"]); ?></td>
+          <td><?php echo($rs["bt"]); ?></td>
+          <td><?php echo($rs["gjj"]); ?></td>
+          <td><?php echo($rs["lb"]); ?></td>
+          <td><?php echo($rs["yb"]); ?></td>
+          <td><?php echo($rs["qt"]); ?></td>
+          <td><?php echo($rs["stotal"]); ?></td>
 	    </tr>
         <tr bgcolor='#FFFFFF'>
           <td colspan="1" align='right' bgcolor="#FFFFFF"> 添加时间</td>
-          <td colspan="9"><%=rs("addtime")%></td>
+          <td colspan="9"><?php echo($rs["addtime"]); ?></td>
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td colspan="10" >
-              <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<%=rs("id")%>"></td>
+              <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
 	  </table>
-<%
-end if
-end if
-%>
+<?php
+	}
+}
+?>
 
 <br>
-<%if action="edit" then
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Salary where id="&Request("id")
-rs.open sql,conn,1,1
-if not rs.eof Then
+<?php
+if ($action == "edit") {
+	//set rs=server.createobject("adodb.recordset") 
+	$sql = "select * from Salary where id=" . $_REQUEST["id"];
+	//rs.open sql,conn,1,1
+	if (!$rs) {
 %>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form name="add" method="post" action="salary.php">
@@ -357,17 +387,17 @@ if not rs.eof Then
         </tr>
         <tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">职员工号</td>
-          <td align="left" colspan="9"><input name="Sid" type="text" id="Sid" onKeyDown="next()" value="<%=rs("Sid")%>" >
+          <td align="left" colspan="9"><input name="Sid" type="text" id="Sid" onKeyDown="next()" value="<?php echo($rs["sid"]); ?>" >
             按回车\TAB键即可输入下一选项</td>
         </tr>
         <tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">职员姓名</td>
-          <td align="left" colspan="9"><input name="Sname" type="text" id="Sname" onKeyDown="next()" value="<%=rs("Sname")%>" ></td>
+          <td align="left" colspan="9"><input name="Sname" type="text" id="Sname" onKeyDown="next()" value="<?php echo($rs["sname"]); ?>" ></td>
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align='right' bgcolor="#FFFFFF"> 工资年月</td>
-          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<%=rs("Syear")%>" size="5" maxlength="4" >年
-            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<%=rs("Smonth")%>" size="3" maxlength="2" >月</td>
+          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<?php echo($rs["syear"]); ?>" size="5" maxlength="4" >年
+            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<?php echo($rs["smonth"]); ?>" size="3" maxlength="2" >月</td>
         </tr>
         <tr align='center' bgcolor='#F2FDFF'>
           <td align="right">工资详单</td>
@@ -383,31 +413,31 @@ if not rs.eof Then
         </tr>
         <tr align='center' bgcolor='#FFFFFF'>
           <td align="right">所发金额</td>
-          <td><input name="Basic" type="text" id="Basic" onKeyDown="next()" value="<%=rs("Basic")%>" size="10" maxlength="6" ></td>
-          <td><input name="Perform" type="text" id="Perform" onKeyDown="next()" value="<%=rs("Perform")%>" size="10" maxlength="6" ></td>
-          <td><input name="JT" type="text" id="JT" onKeyDown="next()" value="<%=rs("JT")%>" size="10" maxlength="6" ></td>
-          <td><input name="BT" type="text" id="BT" onKeyDown="next()" value="<%=rs("BT")%>" size="10" maxlength="6" ></td>
-          <td><input name="GJJ" type="text" id="GJJ" onKeyDown="next()" value="<%=rs("GJJ")%>" size="10" maxlength="6" ></td>
-          <td><input name="LB" type="text" id="LB" onKeyDown="next()" value="<%=rs("LB")%>" size="10" maxlength="6" ></td>
-          <td><input name="YB" type="text" id="YB" onKeyDown="next()" value="<%=rs("YB")%>" size="10" maxlength="6" ></td>
-          <td><input name="QT" type="text" id="QT" onKeyDown="next()" value="<%=rs("QT")%>" size="10" maxlength="6" ></td>
-          <td><input name="Stotal" type="text" id="Stotal" onKeyDown="next()" value="<%=rs("Stotal")%>" size="10" maxlength="10" ></td>
+          <td><input name="Basic" type="text" id="Basic" onKeyDown="next()" value="<?php echo($rs["basic"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="Perform" type="text" id="Perform" onKeyDown="next()" value="<?php echo($rs["perform"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="JT" type="text" id="JT" onKeyDown="next()" value="<?php echo($rs["jt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="BT" type="text" id="BT" onKeyDown="next()" value="<?php echo($rs["bt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="GJJ" type="text" id="GJJ" onKeyDown="next()" value="<?php echo($rs["gjj"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="LB" type="text" id="LB" onKeyDown="next()" value="<?php echo($rs["lb"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="YB" type="text" id="YB" onKeyDown="next()" value="<?php echo($rs["yb"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="QT" type="text" id="QT" onKeyDown="next()" value="<?php echo($rs["qt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="Stotal" type="text" id="Stotal" onKeyDown="next()" value="<?php echo($rs["stotal"]); ?>" size="10" maxlength="10" ></td>
 	    </tr>
         <tr bgcolor='#FFFFFF'>
           <td colspan="1" align='right' bgcolor="#FFFFFF"> 添加时间</td>
-          <td colspan="9"><input name="addtime" type="text" id="addtime" value="<%=rs("addtime")%>" onKeyDown="next()" ></td>
+          <td colspan="9"><input name="addtime" type="text" id="addtime" value="<?php echo($rs["addtime"]); ?>" onKeyDown="next()" ></td>
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
            <input type="button" name="Submit3" value="提交" onClick="check()">
-           <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<%=rs("id")%>"></td>
+           <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
       </form>
 	  </table>
-<%
-end if
-end if
-%>     
+<?php
+	}
+}
+?>     
     </td>
   </tr>
 </table>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><%=sysConfig%></title>
+<title><?php echo($sysConfig); ?></title>
 <link href="images/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -16,19 +16,19 @@
       </tr>
       <tr bgcolor="#FFFFFF">
         <td>后台操作管理员：</td>
-        <td colspan="3"><%=session("admin_name")%></td>
+        <td colspan="3"><?php echo($_SESSION["admin_name"]); ?></td>
       </tr>
       <tr bgcolor="#FFFFFF">
         <td width="100">服务器名：</td>
-        <td width="250"><%=Request.ServerVariables("SERVER_NAME")%></td>
+        <td width="250"><?php echo($_SERVER["SERVER_NAME"]); ?></td>
         <td width="20%">服务器IP：</td>
-        <td><%=Request.ServerVariables("LOCAL_ADDR")%></td>
+        <td><?php echo($_SERVER["SERVER_ADDR"]); ?></td>
       </tr>
       <tr bgcolor="#FFFFFF">
         <td>服务器端口：</td>
-        <td><%=Request.ServerVariables("SERVER_PORT")%></td>
+        <td><?php echo($_SERVER["SERVER_PORT"]); ?></td>
         <td>服务器时间：</td>
-        <td><%=now%></td>
+        <td><?php echo(date('Y-m-d H:i:s', time())); ?></td>
       </tr>
     </table>
 	<p>
@@ -38,7 +38,7 @@
       </tr>
       <tr bgcolor="#FFFFFF">
         <td width="100"> 系统名称：</td>
-        <td><%=sysConfig%></td>
+        <td><?php echo($sysConfig); ?></td>
       </tr>
       <tr bgcolor="#FFFFFF">
         <td > 程序版本：</td>

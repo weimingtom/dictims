@@ -1,9 +1,9 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
-<%
-keywords=request("keywords")
-LX=request("LX")
-%>
+<?php
+$keywords = !empty($_REQUEST["keywords"]) ? $_REQUEST["keywords"] : "";
+$lx = !empty($_REQUEST["LX"]) ? $_REQUEST["LX"] : "";
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -39,58 +39,58 @@ window.location = params ;
             <input name="Query" type="submit" id="Query" value="查 询"></td>
           </form>
         </tr>  
-<%
-if keywords<>"" then
-%>
+<?php
+if ($keywords != "") {
+?>
 	    <tr align="center" bgcolor="#ebf0f7">
           <td width="10%">职员工号</td>
           <td width="65%" colspan="5">职员信息</td>
           <td width="25%">执行操作</td>
         </tr>
-<%
- if LX<>"" Then
-   Select Case LX
-     Case "Sid" 
-   sql="select * from Staff where Sid like '%"&keywords&"%' order by id desc"
-	 Case "Sname"
-   sql="select * from Staff where Sname like '%"&keywords&"%' order by id desc"
-   end select
- end if
- set rs=server.createobject("adodb.recordset") 
- rs.open sql,conn,1,1
- if not rs.eof Then
-    proCount=rs.recordcount
-    For i = 1 to proCount
-    if rs.EOF then     
-    Exit For 
-    end if
-%>
+<?php
+	if ($lx != "") {
+		if ($lx == "Sid") { 
+	   		$sql = "select * from staff where sid like '%" . 
+	   			keywords . 
+	   			"%' order by id desc";
+		} else if ($lx == "Sname") {
+	   		$sql = "select * from staff where sname like '%" . 
+	   			keywords . 
+	   			"%' order by id desc";
+	   	}
+ 	}
+	$result = mysql_query($sql, $con);
+	if ($result !== false) {
+	    $rs = mysql_fetch_assoc($result);
+	} else {
+	    $rs = null;
+	}
+	if (!rs) {
+		do {
+?>
 		<tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
-		  <td><%=rs("Sid")%></td>
-          <td><%=rs("Sex")%></td>
-          <td><%=rs("Sname")%></td>
-          <td><%=rs("Department")%></td>
-          <td><%=rs("Jobs")%></td>
-          <td><%=rs("State")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="staff.php?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="staff.php?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('staff.php?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
-<%
-rs.MoveNext 
-next
-%>
+		  <td><?php echo($rs["sid"]); ?></td>
+          <td><?php echo($rs["sex"]); ?></td>
+          <td><?php echo($rs["sname"]); ?></td>
+          <td><?php echo($rs["department"]); ?></td>
+          <td><?php echo($rs["jobs"]); ?></td>
+          <td><?php echo($rs["state"]); ?></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="staff.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="staff.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('staff.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+<?php
+		} while ($rs = mysql_fetch_assoc($result));
+?>
 		</tr>
 		
-<%
-else
-%>
+<?php
+	} else {
+?>
         <tr align="center" bgcolor="#FFFFFF">
           <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><%=keywords%></font> 信息！</td>
         </tr>
-<%
-end if
-rs.close
-set rs=nothing
-end if
-%>
+<?php
+	}
+}
+?>
       </table> 
     </td>
   </tr>

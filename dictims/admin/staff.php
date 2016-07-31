@@ -1,71 +1,92 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
-<%
-if Request("wor")="del" then
-id=request("id")
-idArr=split(id,",")
-for i=0 to ubound(idArr)
-sql="delete from Staff where id="&trim(idArr(i))
-conn.execute(sql)
-next
-end if
-%>
-<%
-IF Request("work")="del" Then
-sql="delete from Staff where id="&Request("id")
-Conn.execute(sql)
-header('location:?action=list');
-End IF
-%>
-<%
-action=Request("action")
-id=Request("id")
-if action="yes" Then
- set rs=server.createobject("adodb.recordset") 
-if id="" then
-   set rsCheck = conn.execute("select Sid from Staff where Sid='" & trim(Request.Form("Sid")) & "'")
-     if not (rsCheck.bof and rsCheck.eof) then
-      response.write "<script language='javascript'>alert('职员工号" & trim(Request.Form("Sid")) & " 已存在，请检查！');history.back(-1);</script>"
-      response.end
-     end if
-   set rsCheck=nothing
-   sql="select * from Staff" 
-   rs.open sql,conn,3,3
-   rs.addnew 
-else
-   sql="select * from Staff where id="&id&"" 
-   rs.open sql,conn,1,2
-end if
-rs("Sid")=Request("Sid")
-rs("Pws")=Request("Pws")
-rs("Sname")=Request("Sname")
-rs("State")=Request("State")
-rs("Idcard")=Request("Idcard")
-rs("Sex")=Request("Sex")
-rs("Home")=Request("Home")
-rs("National")=Request("National")
-rs("Birth")=Request("Birth")
-rs("Marriage")=Request("Marriage")
-rs("Political")=Request("Political")
-rs("Political_date")=Request("Political_date")
-rs("Culture")=Request("Culture")
-rs("School")=Request("School")
-rs("Graduate")=Request("Graduate")
-rs("Address")=Request("Address")
-rs("Phone")=Request("Phone")
-rs("Email")=Request("Email")
-rs("IM")=Request("IM")
-rs("Department")=Request("Department")
-rs("Jobs")=Request("Jobs")
-rs("Duty")=Request("Duty")
-rs("Entrance")=Request("Entrance")
-rs("Comment")=Request("Comment")
- rs.update
- rs.close
-set rs=nothing
-  header('location:?action=list');
-end if
-%>
+<?php
+if ($_REQUEST("wor") == "del") {
+	$id = $_REQUEST["id"];
+	$idArr = explode(",", $id);
+	for ($i = 0; i < count($idArr); $i++) {
+		$sql = "delete from Staff where id=" . trim($idArr($i));
+		mysql_query($sql, $con);
+	}
+}
+?>
+<?php
+if ($_REQUEST["work"] == "del") {
+	$sql = "delete from Staff where id=" . $_REQUEST["id"];
+	mysql_query($sql, $con);
+	header('location:?action=list');
+}
+?>
+<?php
+$action = $_REQUEST["action"];
+$id = $_REQUEST["id"];
+if ($action == "yes") {
+ 	if ($id == "") {
+	   $sql = "select sid from staff where sid='" .
+	   		trim($_REQUEST["sid"]) . "'";
+	   if (!rsCheck) {
+	      die("<script language='javascript'>alert('职员工号" . trim($_REQUEST["sid"]) . " 已存在，请检查！');history.back(-1);</script>");
+	   }
+	   $sql = "insert into staff (sid,pws,sname,state,idcard,sex,home,national,birth,marriage,political,political_date,culture,school,graduate,address,phone,email,im,department,jobs,duty,entrance,comment) values (" . 
+	   		"'" . $_REQUEST["sid"] . "'," .
+	   		"'" . $_REQUEST["pws"] . "'," .
+	   		"'" . $_REQUEST["sname"] . "'," .
+	   		"'" . $_REQUEST["state"] . "'," .
+	   		"'" . $_REQUEST["idcard"] . "'," .
+	   		"'" . $_REQUEST["sex"] . "'," .
+	   		"'" . $_REQUEST["home"] . "'," .
+	   		"'" . $_REQUEST["national"] . "'," .
+	   		"'" . $_REQUEST["birth"] . "'," .
+	   		"'" . $_REQUEST["marriage"] . "'," .
+	   		"'" . $_REQUEST["political"] . "'," .
+	   		"'" . $_REQUEST["political_date"] . "'," .
+	   		"'" . $_REQUEST["culture"] . "'," .
+	   		"'" . $_REQUEST["school"] . "'," .
+	   		"'" . $_REQUEST["graduate"] . "'," .
+	   		"'" . $_REQUEST["address"] . "'," .
+	   		"'" . $_REQUEST["phone"] . "'," .
+	   		"'" . $_REQUEST["email"] . "'," .
+	   		"'" . $_REQUEST["im"] . "'," .
+	   		"'" . $_REQUEST["department"] . "'," .
+	   		"'" . $_REQUEST["jobs"] . "'," .
+	   		"'" . $_REQUEST["duty"] . "'," .
+	   		"'" . $_REQUEST["entrance"] . "'," .
+	   		"'" . $_REQUEST["comment"] . "')";
+	} else {
+	   $sql="update from staff set " . 	   		"'" . $_REQUEST["sid"] . "'," .
+	   		"pws='" . $_REQUEST["pws"] . "'," .
+	   		"sname='" . $_REQUEST["sname"] . "'," .
+	   		"state='" . $_REQUEST["state"] . "'," .
+	   		"idcard='" . $_REQUEST["idcard"] . "'," .
+	   		"sex='" . $_REQUEST["sex"] . "'," .
+	   		"home='" . $_REQUEST["home"] . "'," .
+	   		"national='" . $_REQUEST["national"] . "'," .
+	   		"birth='" . $_REQUEST["birth"] . "'," .
+	   		"marriage='" . $_REQUEST["marriage"] . "'," .
+	   		"political='" . $_REQUEST["political"] . "'," .
+	   		"political_date='" . $_REQUEST["political_date"] . "'," .
+	   		"culture='" . $_REQUEST["culture"] . "'," .
+	   		"school='" . $_REQUEST["school"] . "'," .
+	   		"graduate='" . $_REQUEST["graduate"] . "'," .
+	   		"address='" . $_REQUEST["address"] . "'," .
+	   		"phone='" . $_REQUEST["phone"] . "'," .
+	   		"email='" . $_REQUEST["email"] . "'," .
+	   		"im='" . $_REQUEST["im"] . "'," .
+	   		"department='" . $_REQUEST["department"] . "'," .
+	   		"jobs='" . $_REQUEST["jobs"] . "'," .
+	   		"duty='" . $_REQUEST["duty"] . "'," .
+	   		"entrance='" . $_REQUEST["entrance"] . "'," .
+	   		"comment='" . $_REQUEST["comment"] . "'" .
+	   	" where id=" . $id . ""; 
+	   //rs.open sql,conn,1,2
+	}
+
+	//rs.update
+	//rs.close
+	//set rs=nothing
+	header('location:?action=list');
+}
+?>
 <html>
 <head>
 <title>员工工资信息管理系统</title>
@@ -176,7 +197,9 @@ function check()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr valign="top">
     <td bgcolor="#FFFFFF">
-	<%if action="add" then%><BR>
+<?php
+if ($action == "add") {
+?><BR>
 	<table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form name="add" method="post" action="staff.php">
         <tr align="center" bgcolor="#F2FDFF">
@@ -292,9 +315,13 @@ function check()
         </tr>
       </form>
 	  </table>
-	<%end if%>
+<?php
+}
+?>
 <br>
-    <%if action="list" then%>
+<?php
+if ($action == "list") {
+?>
       <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="8"  class="optiontitle">职员列表</td>
@@ -306,50 +333,50 @@ function check()
           <td width="20%">执行操作</td>
         </tr>
 		
-<%
-sql="select * from Staff order by id desc"
- set rs=server.createobject("adodb.recordset") 
- rs.open sql,conn,1,1
- if not rs.eof then
- proCount=rs.recordcount
-	rs.PageSize=10					  '定义显示数目
-     if not IsEmpty(Request("ToPage")) then
-	    ToPage=CInt(Request("ToPage"))
-		if ToPage>rs.PageCount then
-		   rs.AbsolutePage=rs.PageCount
-		   intCurPage=rs.PageCount
-		elseif ToPage<=0 then
-		   rs.AbsolutePage=1
-		   intCurPage=1
-		else
-		   rs.AbsolutePage=ToPage
-		   intCurPage=ToPage
-		end if
-	 else
-		rs.AbsolutePage=1
-		intCurPage=1
-	 end if
-	 intCurPage=CInt(intCurPage)
-	 For i = 1 to rs.PageSize
-	 if rs.eof then     
-	 Exit For 
-	 end if
-%>
+<?php
+		$sql = "select * from Staff order by id desc";
+		//set rs=server.createobject("adodb.recordset") 
+		//rs.open sql,conn,1,1
+		if (!$rs) {
+ 			$proCount = $rs->recordcount;
+			$rs->pageSize = 10;	//定义显示数目
+		    if (!empty($_REQUEST["ToPage"])) {
+			    $toPage = intval(Request("ToPage"));
+				if ($toPage > $rs->pageCount) {
+				   $rs->absolutePage = $rs->pageCount;
+				   $intCurPage = $rs->pageCount;
+				} else if ($ToPage <= 0) {
+				   $rs->absolutePage = 1;
+				   $intCurPage = 1;
+				} else {
+				   $rs->absolutePage = $toPage;
+				   $intCurPage = $toPage;
+				}
+			 } else {
+				$rs->absolutePage = 1;
+				$intCurPage = 1;
+			 }
+			 $intCurPage = intval($intCurPage);
+			 for ($i = 1; $i < $rs->pageSize; $i++) {
+				 if (!$rs) {     
+				 	break; 
+				 }
+?>
         <form name="del" action="" method="post">
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
-		  <td><input type="checkbox" name="id" value="<%=rs("id")%>"></td>
-		  <td><%=rs("Sid")%></td>
-          <td><%=rs("Sex")%></td>
-          <td><%=rs("Sname")%></td>
-          <td><%=rs("Department")%></td>
-          <td><%=rs("Jobs")%></td>
-          <td><%=rs("State")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
+		  <td><input type="checkbox" name="id" value="<?php echo($rs["id"]); ?>"></td>
+		  <td><?php echo($rs["sid"]); ?></td>
+          <td><?php echo($rs["sex"]); ?></td>
+          <td><?php echo($rs["sname"]); ?></td>
+          <td><?php echo($rs["department"]); ?></td>
+          <td><?php echo($rs["jobs"]); ?></td>
+          <td><?php echo($rs["state"]); ?></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
-<%
-rs.movenext 
-next
-%>
+<?php
+				//rs.movenext 
+			}
+?>
 		<tr bgcolor="#ffffff">
 		  <td colspan="8">&nbsp;&nbsp;
 		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
@@ -359,28 +386,31 @@ next
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="8"> 总共<font color="#ff0000"><%=rs.PageCount%></font>页, <font color="#ff0000"><%=proCount%></font>个职员, 当前页<font color="#ff0000"><%=intCurPage%> </font><%if intCurPage<>1 then%><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<%=intCurPage-1%>">上一页</a>|<% end if
-if intCurPage<>rs.PageCount then %><a href="?action=list&ToPage=<%=intCurPage+1%>">下一页</a>|<a href="?action=list&ToPage=<%=rs.PageCount%>"> 最后页</a><% end if%></span></td>
+          <td colspan="8"> 总共<font color="#ff0000"><%=rs.PageCount%></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
+if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rs->pageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
 <%
-else
+	} else {
 %>
         <tr align="center" bgcolor="#ffffff">
          <td colspan="8">对不起！目前数据库中还没有添加职员！</td>
         </tr>
-<%
-rs.close
-set rs=nothing
-end if
-%>
+<?php
+		//rs.close
+		//set rs=nothing
+	}
+?>
       </table>
 	  <br>
-<%end if%>
-<%if action="edit" then
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Staff where id="&Request("id")
-rs.open sql,conn,1,1
-if not rs.eof Then
+<?php
+}
+?>
+<?php
+if ($action == "edit") {
+	//set rs=server.createobject("adodb.recordset") 
+	$sql="select * from Staff where id=" . $_REQUEST("id");
+	//rs.open sql,conn,1,1
+	if (!$rs) {
 %>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
        <form name="add" method="post" action="staff.php">
@@ -399,10 +429,10 @@ if not rs.eof Then
           <td width="10%" align="right">职员状态</td>
           <td width="15%">
 		  <select name="State" selfValue="职员状态">
-   		    <option value="在职" <% if rs("State")="在职" Then Response.write("Selected")%>>在职</option>
-   		    <option value="离职" <% if rs("State")="离职" Then Response.write("Selected")%>>离职</option>
-   		    <option value="产假" <% if rs("State")="产假" Then Response.write("Selected")%>>产假</option>
-   		    <option value="休假" <% if rs("State")="休假" Then Response.write("Selected")%>>休假</option>
+   		    <option value="在职" <?php if ($rs("state") == "在职") { echo("selected"); } ?>>在职</option>
+   		    <option value="离职" <?php if ($rs("state") == "离职") { echo("selected"); } ?>>离职</option>
+   		    <option value="产假" <?php if ($rs("state") == "产假") { echo("selected"); } ?>>产假</option>
+   		    <option value="休假" <?php if ($rs("state") == "休假") { echo("selected"); } ?>>休假</option>
   		  </select><font color="red">*</font></td>
         </tr>
         <tr bgcolor="#FFFFFF">
@@ -410,7 +440,7 @@ if not rs.eof Then
           <td ><input name="Idcard" type="text" id="Idcard" value="<%=rs("Idcard")%>" size="18">
             <font color="red">*</font></td>
           <td align="right">性别</td>
-          <td><input type="radio" name="Sex" value="男"  <% if rs("Sex")="男"  then response.Write("checked") end if%>/>男 <input type="radio" name="Sex" value="女"  <% if rs("Sex")="女" then response.Write("checked") end if%> />女<font color="red">*</font></td>
+          <td><input type="radio" name="Sex" value="男"  <?php if ($rs["Sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="Sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
           <td align="right">籍贯</td>
           <td><input name="Home" type="text" id="Home" value="<%=rs("Home")%>"></td>
           <td align="right">民族</td>
@@ -423,17 +453,17 @@ if not rs.eof Then
           <td>
 		  <select name="Marriage" selfValue="婚姻状况">
    		    <option value="">请选择</option>
-   		    <option value="未婚" <% if rs("Marriage")="未婚" Then Response.write("Selected")%>>未婚</option>
-   		    <option value="已婚" <% if rs("Marriage")="已婚" Then Response.write("Selected")%>>已婚</option>
+   		    <option value="未婚" <?php if ($rs["Marriage"] == "未婚") { echo("selected"); } ?>>未婚</option>
+   		    <option value="已婚" <?php if ($rs["Marriage"] == "已婚") { echo("selected"); } ?>>已婚</option>
   		  </select></td>
           <td align="right" width="10%">政治面貌</td>
           <td>
 		  <select name="Political" selfValue="政治面貌">
    		    <option value="">请选择</option>
-   		    <option value="无" <% if rs("Political")="无" Then Response.write("Selected")%>>无</option>
-   		    <option value="团员" <% if rs("Political")="团员" Then Response.write("Selected")%>>团员</option>
-   		    <option value="党员" <% if rs("Political")="党员" Then Response.write("Selected")%>>党员</option>
-   		    <option value="民主" <% if rs("Political")="民主" Then Response.write("Selected")%>>民主</option>
+   		    <option value="无" <?php if ($rs["Political"] == "无") { echo("selected"); } ?>>无</option>
+   		    <option value="团员" <?php if ($rs["Political"] == "团员") { echo("selected"); } ?>>团员</option>
+   		    <option value="党员" <?php if ($rs["Political"] == "党员") { echo("selected"); } ?>>党员</option>
+   		    <option value="民主" <?php if ($rs["Political"] == "民主") { echo("selected"); } ?>>民主</option>
   		  </select> </td>
           <td align="right" width="10%">加入时间</td>
           <td><input name="Political_date" type="text" id="Political_date" value="<%=rs("Political_date")%>"></td>
@@ -462,25 +492,25 @@ if not rs.eof Then
           <td align="right"> 所在部门</td>
           <td><select name="Department" selfvalue="所在部门">
             <option value="">请选择</option>
-            <option value="业务部" <% if rs("Department")="业务部" Then Response.write("Selected")%>>业务部</option>
-            <option value="客服部" <% if rs("Department")="客服部" Then Response.write("Selected")%>>客服部</option>
-            <option value="技术部" <% if rs("Department")="技术部" Then Response.write("Selected")%>>技术部</option>
+            <option value="业务部" <% if ($rs["department"] == "业务部") { echo("Selected"); } ?>>业务部</option>
+            <option value="客服部" <% if ($rs["department"] == "客服部") { echo("Selected"); } ?>>客服部</option>
+            <option value="技术部" <% if ($rs["department"] == "技术部") { echo("Selected"); } ?>>技术部</option>
           </select>
             <font color="red">*</font></td>
           <td align="right">担任职务</td>
           <td>
 		  <select name="Jobs" selfValue="担任职务">
    		    <option value="">请选择</option>
-   		    <option value="技术员" <% if rs("Jobs")="技术员" Then Response.write("Selected")%>>技术员</option>
-   		    <option value="主管" <% if rs("Jobs")="主管" Then Response.write("Selected")%>>主管</option>
-   		    <option value="经理" <% if rs("Jobs")="经理" Then Response.write("Selected")%>>经理</option>
+   		    <option value="技术员" <?php if ($rs["jobs"] == "技术员") { echo("selected"); } ?>>技术员</option>
+   		    <option value="主管" <?php if ($rs["jobs"] == "主管") { echo("selected"); } ?>>主管</option>
+   		    <option value="经理" <?php if ($rs["jobs"] == "经理") { echo("selected"); } ?>>经理</option>
   		  </select><font color="red">*</font></td>
           <td align="right">职称</td>
           <td><select name="Duty" selfvalue="职称">
             <option value="">请选择</option>
-            <option value="初级" <% if rs("Duty")="初级" Then Response.write("Selected")%>>初级</option>
-            <option value="中级" <% if rs("Duty")="中级" Then Response.write("Selected")%>>中级</option>
-            <option value="高级" <% if rs("Duty")="高级" Then Response.write("Selected")%>>高级</option>
+            <option value="初级" <?php if ($rs["duty"] == "初级") { echo("Selected"); } ?>>初级</option>
+            <option value="中级" <?php if ($rs["duty"] == "中级") { echo("Selected"); } ?>>中级</option>
+            <option value="高级" <?php if ($rs["duty"] == "高级") { echo("Selected"); } ?>>高级</option>
           </select>
             <font color="red">*</font></td>
           <td align="right">入职时间</td>
@@ -500,16 +530,17 @@ if not rs.eof Then
 		</tr>
   		</form>
   	</table>
-<%
-end if
-end if
-%>
+<?php
+	}
+}
+?>
 <br>
-<%if action="view" then
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Staff where id="&Request("id")
-rs.open sql,conn,1,1
-if not rs.eof Then
+<?php
+if ($action == "view") {
+	//set rs=server.createobject("adodb.recordset") 
+	$sql = "select * from Staff where id=" . $_REQUEST["id"];
+	//rs.open sql,conn,1,1
+	if (!$rs) {
 %>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
 		<tr align="center" bgcolor="#F2FDFF">
@@ -584,10 +615,10 @@ if not rs.eof Then
           <input type="button" name="Submit2" value="返回" onClick="history.back(-1)">		  </td>
 		</tr>
   	</table>
-<%
-end if
-end if
-%>    
+<?php
+	}
+}
+?>    
     </td>
   </tr>
 </table>

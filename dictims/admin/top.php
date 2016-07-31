@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><%=sysConfig%></title>
+<title><?php echo($sysConfig); ?></title>
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 body {margin: 0px;}
@@ -21,7 +21,7 @@ setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString
 </script></span></td>
   </tr>
   <tr style="background-image:url(images/top_bg.gif); height:16px">    
-    <td width="40%" style="color:#000000;">欢迎您<b><%=session("admin_name")%></b>! 您现在登录的是<%=sysConfig%>! </td>
+    <td width="40%" style="color:#000000;">欢迎您<b><?php echo($_SESSION["admin_name"]); ?></b>! 您现在登录的是<?php echo($sysConfig); ?>! </td>
     <td width="60%" align="right" style="color:#000000;"> <a href="logout.php" target="_parent">退出系统</a></td>
   </tr>
 </table>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><%=sysInfo%></title>
+<title><?php echo($sysInfo); ?></title>
 <style type="text/css">
 body {margin: 0px;}
 td   {font-size:12px;color:#000;font-family: Helvetica, sans-serif, "宋体";}

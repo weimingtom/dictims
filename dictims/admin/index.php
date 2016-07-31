@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/main.css" rel="stylesheet" type="text/css">
-<title><%=sysConfig%></title>
+<title><?php echo($sysConfig); ?></title>
 </head>
 <frameset rows="108,*,30" cols="*" frameborder="No" border="0" framespacing="0">
   <frame src="top.php" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />

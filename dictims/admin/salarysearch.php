@@ -1,11 +1,11 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
-<%
-Syear=trim(Request("Syear"))
-Smonth=trim(Request("Smonth"))
-LX=trim(Request("LX"))
-keywords=trim(Request("keywords"))
-%>
+<?php
+$syear = !empty($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
+$smonth = !empty($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
+$lx = !empty($_REQUEST["lx"]) ? trim($_REQUEST["lx"]) : "";
+$keywords = !empty($_REQUEST("keywords")) ? trim($_REQUEST("keywords")) : "";
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -36,15 +36,15 @@ window.location = params ;
 			请选择查询信息：
 			<select name="Syear">
 			<option  value="">-请选择年份-</option>
-			<%for y=2011 to 2012%>
-			<option value="<%=y%>"><%=y%></option>
-			<%next%>
+			<?php for($y = 2011; $y <= 2012; $y++) { ?>
+			<option value="<?php echo($y); ?>"><?php echo($y); ?></option>
+			<?php } ?>
 			</select>
 			<select name="Smonth">
 			<option value="">-请选择月份-</option>
-			<%for m=1 to 12%>
-			<option value="<%=m%>"><%=m%></option>
-		    <%next%>
+			<?php for ($m = 1; $m <= 12; $m++) { %>
+			<option value="<?php echo($m); ?>"><?php echo($m); ?></option>
+			<?php } ?>
 			</select>
 			<select name="LX">
              <option value="Sname">职员姓名</option>
@@ -54,9 +54,9 @@ window.location = params ;
             <input name="Query" type="submit" id="Query" value="查 询"></td>
           </form>
         </tr> 
-<%
-if keywords<>"" then
-%>
+<?php
+if ($keywords != "") {
+?>
         <tr align="center" bgcolor="#ebf0f7">
           <td width="10%">年份</td>
           <td width="10%">月份</td>
@@ -65,64 +65,62 @@ if keywords<>"" then
           <td width="20%">合计工资</td>	
 		  <td width="20%">执行操作</td>  
         </tr>
-<%
- sql="select * from Salary where 5=5"
- if Syear<>"" then '按类别显示
-	sql=sql & " and Syear='" & Syear & "' "
- end if
- if Syear="" then
-    Syear=Year(now())
-	sql=sql & " and Syear='" & Syear & "' "
- end if
- if Smonth<>"" then '
-	sql=sql & " and Smonth='" & Smonth & "' "
- end if
- if Smonth="" then
-    Smonth=Month(now())
-	sql=sql & " and Smonth='" & Smonth & "' "
- end if
- if LX="Sid" then '
-	sql=sql & " and Sid like '%"&keywords&"%' "
- end if
- if LX="Sname" then '
-	sql=sql & " and Sname like '%"&keywords&"%' "
- end if
- sql=sql & " order by id desc"
- set rs=server.createobject("adodb.recordset") 
- rs.open sql,conn,1,1
+<?php
+	$sql = "select * from salary where 5=5";
+ 	if ($syear != "") { //按类别显示
+		$sql = $sql . " and syear='" . $syear . "' ";
+ 	}
+ 	if ($syear == "") {
+    	$syear = intval(date("Y"));
+		$sql = $sql . " and syear='" . $syear . "' ";
+ 	}
+ 	if ($smonth != "") {
+		$sql = $sql . " and smonth='" . $smonth . "' ";
+ 	}
+ 	if ($smonth == "") {
+    	$smonth = intval(date("m"));
+		$sql = $sql . " and smonth='" . $smonth . "' ";
+ 	}
+ 	if ($lx == "sid") {
+		$sql = $sql . " and sid like '%" . keywords . "%' ";
+ 	}
+ 	if ($lx == "sname") {
+		$sql = $sql . " and sname like '%" . $keywords . "%' ";
+ 	}
+ 	$sql = $sql . " order by id desc";
 
- if not rs.eof Then
-    proCount=rs.recordcount
-    For i = 1 to proCount
-    if rs.EOF then     
-    Exit For 
-    end if
-%>	
+	$result = mysql_query($sql, $con);
+	if ($result !== false) {
+	    $rs = mysql_fetch_assoc($result);
+	} else {
+	    $rs = null;
+	}
+
+ 	if (!$rs) {
+    	do {
+?>	
 		<tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
-		  <td><%=rs("Syear")%></td>
-          <td><%=rs("Smonth")%></td>
-          <td><%=rs("Sid")%></td>
-          <td><%=rs("Sname")%></td>
-          <td><%=rs("Stotal")%></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<%=rs("id")%>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('salary.php?work=del&id=<%=rs("id")%>&action=list&ToPage=<%=intCurPage%>')">删除</a></td>
-<%
-rs.MoveNext 
-next
-%>
+		  <td><?php echo($rs["syear"]); ?></td>
+          <td><?php echo($rs["smonth"]); ?></td>
+          <td><?php echo($rs["sid"]); ?></td>
+          <td><?php echo($rs["sname"]); ?></td>
+          <td><?php echo($rs["stotal"]); ?></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('salary.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+<?php
+    	} while ($rs = mysql_fetch_assoc($result));
+?>
 		</tr>
 		
-<%
-else
-%>
+<?php
+	} else {
+?>
         <tr align="center" bgcolor="#FFFFFF">
           <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><%=Syear%>-<%=Smonth%>-<%=keywords%>-</font> 信息！</td>
         </tr>
-<%
-end if
-rs.close
-set rs=nothing
-end if
-%>
+<?php
+	}
+}
+?>
       </table> 
     </td>
   </tr>

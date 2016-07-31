@@ -105,7 +105,7 @@ if ($rs) {
                       <td><b>其它</b></td>
                     </tr>
                     <tr align="center">
-                      <td height="30"><%=<?php echo($rs["gjj"]);?></td>
+                      <td height="30"><?php echo($rs["gjj"]);?></td>
                       <td><?php echo($rs["lb"]);?></td>
                       <td><?php echo($rs["yb"]);?></td>
                       <td><?php echo($rs["qt"]);?></td>
@@ -115,7 +115,7 @@ if ($rs) {
                       <td colspan="3"><b>工资合计：</b><?php echo($stotal);?> 元</td>
 					</tr>
 <?php
-    } while ($rs = mysql_fetch_assoc($result))
+    } while ($rs = mysql_fetch_assoc($result));
 ?>
 <?php
 } else {

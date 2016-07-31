@@ -1,7 +1,7 @@
 <?php include('inc/right.php'); ?>
 <?php include('inc/conn.php'); ?>
 <?php include('inc/md5.php'); ?>   
-<script language=Javascript>
+<script language="javascript">
 <!--
 function DoEmpty(params)
 {
@@ -10,45 +10,44 @@ window.location = params ;
 }
 //-->
 </script>
-<%
-if Request("wor")="del" then
-sql="delete from Admin where id="&Request("id")
-Conn.execute(sql)
-header('location:?action=list');
-end if
-%>
-<%
-action=Request("action")
-id=Request("id")
-Username=Request("Username")
-Password=Request("Password1")
-if action="yes" Then
- set rs=server.createobject("adodb.recordset") 
-if id="" then
-   set rsCheck = conn.execute("select Username from Admin where Username='" & trim(Request.Form("Username")) & "'")
-    if not (rsCheck.bof and rsCheck.eof) then
-      response.write "<script language='javascript'>alert('" & trim(Request.Form("Username")) & "用户名称已存在！');history.back(-1);</script>"
-      response.end
-     end if
-	 set rsCheck=nothing
-   sql="select * from Admin" 
-   rs.open sql,conn,3,3
-   rs.addnew 		'添加记录到数据表末端 
-else
-   sql="select * from Admin where id="&id&"" 
-   rs.open sql,conn,1,2  
-end if
- rs("Username")=Username
- rs("Password")=md5_str(Password)
- rs.update 		'更新数据表记录
- rs.close
-set rs=nothing
-  header('location:?action=list');
-end if
-%>
+<?php
+if ($_REQUEST["wor"] == "del") {
+	$sql = "delete from admin where id=" . $_REQUEST["id"];
+	mysql_query($sql, $con);
+	header('location:?action=list');
+	exit;
+}
+?>
+<?php
+$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
+$username = !empty($_REQUEST["username"]) ? $_REQUEST["username"] : "";
+$password = !empty($_REQUEST["password1"]) ? $_REQUEST["password1"] : "";
+if ($action == "yes") {
+ 	if ($id == "") {
+   		$sql = "select username from admin where Username='" .
+   		 	trim($_REQUEST("username")) . "'";
+		$result = mysql_query($sql, $con);
+		if ($result !== false) {
+		    $rsCheck = mysql_fetch_assoc($result);
+		} else {
+		    $rsCheck = null;
+		}
+	    if (!rsCheck) {
+	      	die("<script language='javascript'>alert('" . trim($_REQUEST["username"]) . "用户名称已存在！');history.back(-1);</script>");
+	    }
+   		$sql = "insert into admin (username, password) values ('" . username ."', '" . md5_str($password) . "') "; 
+   	} else {
+   		$sql = "update admin set username = '" . $username . "', password = '" . md5_str($password) . "' where id=" . $id . ""; 
+	}
+	mysql_query($sql, $con);
+  	header('location:?action=list');
+	exit;
+}
+?>
 <html>
 <head>
-<title><%=sysConfig%></title>
+<title><?php echo($sysConfig); ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language="Javascript">
@@ -98,7 +97,9 @@ function check()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr valign="top">
     <td bgcolor="#FFFFFF">
-	<%if action="add" then%>
+<?php 
+if ($action == "add") { 
+?>
 	<br>
       <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <form name="add" method="post" action="admin.php">
@@ -125,9 +126,13 @@ function check()
         </tr>
 		</form>
       </table> 
-    <%end if%>
+<?php 
+} 
+?>
 	<br>
-     <%if action="list" then%>
+<?php 
+if ($action == "list") { 
+?>
       <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="5"  class="optiontitle">用户列表</td>
@@ -138,40 +143,45 @@ function check()
           <td width="25%">用户密码</td>
           <td width="20%">执行操作</td>
         </tr>
-<%
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Admin" 
-rs.open sql,conn,1,1
-do while not rs.eof
-%>
+<?php
+	$sql = "select * from admin"; 
+	$result = mysql_query($sql, $con);
+	if ($result !== false) {
+	    $rs = mysql_fetch_assoc($result);
+	} else {
+	    $rs = null;
+	}
+	while ($rs = mysql_fetch_assoc($result)) {
+?>
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
-		  <td><%=rs("id")%></td>
-          <td><%=rs("Username")%></td>
-          <td><%=rs("Password")%></td>
-          <td><%if rs("id")=1 then%>
-          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<%=rs("id")%>">修改</a> <IMG src="images/drop.gif" align="absmiddle">删除
-          <%else%>
-          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<%=rs("id")%>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?wor=del&id=<%=rs("id")%>')">删除</a>
-          <%end if%></td>
+		  <td><?php echo($rs["id"]); ?></td>
+          <td><?php echo($rs["username"]); ?></td>
+          <td><?php echo($rs["password"]); ?></td>
+          <td><?php if ($rs["id"] == 1) { %>
+          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle">删除
+          <?php } else { ?>
+          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
+          <?php } ?></td>
         </tr>
-<%
-rs.movenext
-loop
-rs.close
-set rs=nothing
-%>
+<?php
+	}
+?>
         <tr align="right" bgcolor="#ebf0f7">
           <td colspan="5"><a href="admin.php?action=add">添加用户</a></td>
         </tr>
       </table> 
-<%
-end if
-if action="edit" then
-set rs=server.createobject("adodb.recordset") 
-sql="select * from Admin where id="&Request("id")
-rs.open sql,conn,1,1
-if not rs.eof Then
-%>
+<?php
+}
+if ($action == "edit") {
+	$sql = "select * from admin where id=" . $_REQUEST["id"];
+	$result = mysql_query($sql, $con);
+	if ($result !== false) {
+	    $rs = mysql_fetch_assoc($result);
+	} else {
+	    $rs = null;
+	}
+	if ($rs) {
+?>
 <br>
 	  <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <form name="add" method="post" action="admin.php">
@@ -180,7 +190,7 @@ if not rs.eof Then
 		</tr>
 		<tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">用户名：</td>
-          <td align="left"><input name="Username" type="text" id="Username" value="<%=rs("Username")%>"></td>
+          <td align="left"><input name="Username" type="text" id="Username" value="<?php echo($rs["username"]); ?>"></td>
         </tr>
 		<tr align='center' bgcolor='#FFFFFF'>
 		  <td align='right' bgcolor="#FFFFFF"> 登陆密码：</td>
@@ -195,15 +205,15 @@ if not rs.eof Then
 	    <tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="2">
 		   <input type="hidden" name="action" value="yes"> <input type="button" name="Submit" value="提交" onClick="check()">
-           <input type="button" name="Submit2"value="返回" onClick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<%=rs("id")%>">
+           <input type="button" name="Submit2"value="返回" onClick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">
 		 </td>
 	   </tr>
   	 </form>
   	</table>
-<%
-end if
-end if
-%>
+<?php
+	}
+}
+?>
     </td>
   </tr>
 </table>

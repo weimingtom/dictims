@@ -93,10 +93,10 @@ if ($rs) {
                       <td><b>补贴</b></td>
                     </tr>
                     <tr align="center">
-                      <td height="30"><%=rs("Basic")%></td>
-                      <td><%=rs("Perform")%></td>
-                      <td><%=rs("JT")%></td>
-                      <td><%=rs("BT")%></td>
+                      <td height="30"><?php echo($rs["basic"]); ?></td>
+                      <td><?php echo($rs["perform"]); ?></td>
+                      <td><?php echo($rs["jt"]); ?></td>
+                      <td><?php echo($rs["bt"]); ?></td>
                     </tr>
                     <tr align="center">
                       <td height="30"><b>公积金</b></td>

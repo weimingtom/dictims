@@ -11,7 +11,7 @@ window.location = params ;
 //-->
 </script>
 <?php
-if ($_REQUEST["wor"] == "del") {
+if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$sql = "delete from admin where id=" . $_REQUEST["id"];
 	mysql_query($sql, $con);
 	header('location:?action=list');
@@ -146,18 +146,13 @@ if ($action == "list") {
 <?php
 	$sql = "select * from admin"; 
 	$result = mysql_query($sql, $con);
-	if ($result !== false) {
-	    $rs = mysql_fetch_assoc($result);
-	} else {
-	    $rs = null;
-	}
 	while ($rs = mysql_fetch_assoc($result)) {
 ?>
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
 		  <td><?php echo($rs["id"]); ?></td>
           <td><?php echo($rs["username"]); ?></td>
           <td><?php echo($rs["password"]); ?></td>
-          <td><?php if ($rs["id"] == 1) { %>
+          <td><?php if ($rs["id"] == 1) { ?>
           <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle">删除
           <?php } else { ?>
           <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
@@ -219,3 +214,4 @@ if ($action == "edit") {
 </table>
 </body>
 </html>
+

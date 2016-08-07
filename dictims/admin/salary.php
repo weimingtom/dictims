@@ -1,7 +1,7 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-if ($_REQUEST["wor"] == "del") {
+if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$id = $_REQUEST["id"];
 	$idArr = explode(",", $id);
 	for ($i = 0; $i < count(idArr); $i++) {
@@ -11,10 +11,9 @@ if ($_REQUEST["wor"] == "del") {
 }
 ?>
 <?php
-$action = $_REQUEST["action"];
-$id = $_REQUEST["id"];
+$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 if ($action == "yes") {
- 	//set rs=server.createobject("adodb.recordset") 
 	if ($id == "") {
 		$sql = "select syear,smonth,sname from salary where syear='" .
 			 trim($_REQUEST["syear"]) . 
@@ -239,8 +238,12 @@ if ($action == "list") {
         </tr>	
 <?php
 	$sql="select * from salary order by id desc";
-	//set rs=server.createobject("adodb.recordset") 
-	//rs.open sql,conn,1,1
+    $result = mysql_query($sql, $con);
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
+    } else {
+        $rs = null;
+    }
  	if (!$rs) {
  		$proCount = $rs.recordcount;
 		$rs->pageSize = 15; // 定义显示数目
@@ -279,7 +282,7 @@ if ($action == "list") {
 <?php
 			//rs.movenext 
 		}
-%>
+?>
 		<tr bgcolor="#ffffff">
 		  <td colspan="12">&nbsp;&nbsp;
 		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
@@ -300,11 +303,11 @@ if ($action == "list") {
         <tr align="center" bgcolor="#ffffff">
           <td colspan="7">对不起！目前数据库中还没有添加职员工资！</td>
         </tr>
-<%
+<?php
 	//rs.close
 	//set rs=nothing
 }
-%>
+?>
       </table>
 	  <br>
 <?php
@@ -312,11 +315,15 @@ if ($action == "list") {
 ?>
 <?php
 if ($action == "view") {
-	//set rs=server.createobject("adodb.recordset") 
 	$sql = "select * from Salary where id=" . $_REQUEST["id"];
-	//rs.open sql,conn,1,1
+    $result = mysql_query($sql, $con);
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
+    } else {
+        $rs = null;
+    }
 	if ($rs) {
-%>
+?>
 <br>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
         <tr align="center" bgcolor="#F2FDFF">
@@ -324,15 +331,15 @@ if ($action == "view") {
         </tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right">职员工号</td>
-          <td align="left" colspan="9"><%=rs("Sid")%></td>
+          <td align="left" colspan="9"><?php echo($rs["sid"]); ?></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td width="10%" align="right">职员姓名</td>
-          <td align="left" colspan="9"><%=rs("Sname")%></td>
+          <td align="left" colspan="9"><?php echo($rs["sname"]); ?></td>
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align='right'> 工资年月</td>
-          <td colspan="9"><%=rs("Syear")%>年<%=rs("Smonth")%>月</td>
+          <td colspan="9"><?php echo($rs["syear"]); ?>年<?php echo($rs["smonth"]); ?>月</td>
         </tr>
         <tr bgcolor='#F2FDFF' align="center">
           <td align="right">工资详单</td>
@@ -375,11 +382,15 @@ if ($action == "view") {
 <br>
 <?php
 if ($action == "edit") {
-	//set rs=server.createobject("adodb.recordset") 
-	$sql = "select * from Salary where id=" . $_REQUEST["id"];
-	//rs.open sql,conn,1,1
+	$sql = "select * from salary where id=" . $_REQUEST["id"];
+    $result = mysql_query($sql, $con);
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
+    } else {
+        $rs = null;
+    }
 	if (!$rs) {
-%>
+?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">

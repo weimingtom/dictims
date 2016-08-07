@@ -1,7 +1,7 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-if ($_REQUEST("wor") == "del") {
+if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$id = $_REQUEST["id"];
 	$idArr = explode(",", $id);
 	for ($i = 0; i < count($idArr); $i++) {
@@ -11,15 +11,15 @@ if ($_REQUEST("wor") == "del") {
 }
 ?>
 <?php
-if ($_REQUEST["work"] == "del") {
+if (!empty($_REQUEST["work"]) and $_REQUEST["work"] == "del") {
 	$sql = "delete from Staff where id=" . $_REQUEST["id"];
 	mysql_query($sql, $con);
 	header('location:?action=list');
 }
 ?>
 <?php
-$action = $_REQUEST["action"];
-$id = $_REQUEST["id"];
+$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 if ($action == "yes") {
  	if ($id == "") {
 	   $sql = "select sid from staff where sid='" .
@@ -335,8 +335,12 @@ if ($action == "list") {
 		
 <?php
 		$sql = "select * from Staff order by id desc";
-		//set rs=server.createobject("adodb.recordset") 
-		//rs.open sql,conn,1,1
+		$result = mysql_query($sql, $con);
+	    if ($result !== false) {
+	        $rs = mysql_fetch_assoc($result);
+	    } else {
+	        $rs = null;
+	    }
 		if (!$rs) {
  			$proCount = $rs->recordcount;
 			$rs->pageSize = 10;	//定义显示数目
@@ -386,12 +390,12 @@ if ($action == "list") {
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="8"> 总共<font color="#ff0000"><%=rs.PageCount%></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
+          <td colspan="8"> 总共<font color="#ff0000"><?php echo($rs.PageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
 if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rs->pageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
-<%
+<?php
 	} else {
-%>
+?>
         <tr align="center" bgcolor="#ffffff">
          <td colspan="8">对不起！目前数据库中还没有添加职员！</td>
         </tr>
@@ -407,11 +411,15 @@ if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($
 ?>
 <?php
 if ($action == "edit") {
-	//set rs=server.createobject("adodb.recordset") 
-	$sql="select * from Staff where id=" . $_REQUEST("id");
-	//rs.open sql,conn,1,1
+	$sql="select * from staff where id=" . $_REQUEST("id");
+    $result = mysql_query($sql, $con);
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
+    } else {
+        $rs = null;
+    }
 	if (!$rs) {
-%>
+?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
        <form name="add" method="post" action="staff.php">
 		<tr align="center" bgcolor="#F2FDFF">
@@ -419,12 +427,12 @@ if ($action == "edit") {
 		</tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right"> 职员工号</td>
-          <td width="15%"><input name="Sid" type="text" id="Sid" value="<%=rs("Sid")%>" size="10"> <font color="red">*</font></td>
+          <td width="15%"><input name="Sid" type="text" id="Sid" value="<?php echo($rs["sid"]); ?>" size="10"> <font color="red">*</font></td>
           <td width="10%" align="right"> 职员姓名</td>
-          <td width="15%"><input name="Sname" type="text" id="Sname" value="<%=rs("Sname")%>" size="18"> 
+          <td width="15%"><input name="Sname" type="text" id="Sname" value="<?php echo($rs["sname"]); ?>" size="18"> 
           <font color="red">*</font></td>
 		  <td width="10%" align="right">查询密码</td>
-          <td width="15%"><input name="Pws" type="text" id="Pws" value="<%=rs("Pws")%>" size="16">
+          <td width="15%"><input name="Pws" type="text" id="Pws" value="<?php echo($rs["pws"]); ?>" size="16">
             <font color="red">*</font></td>
           <td width="10%" align="right">职员状态</td>
           <td width="15%">
@@ -437,18 +445,18 @@ if ($action == "edit") {
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right">身份证号</td>
-          <td ><input name="Idcard" type="text" id="Idcard" value="<%=rs("Idcard")%>" size="18">
+          <td ><input name="Idcard" type="text" id="Idcard" value="<?php echo($rs["idcard"]); ?>" size="18">
             <font color="red">*</font></td>
           <td align="right">性别</td>
           <td><input type="radio" name="Sex" value="男"  <?php if ($rs["Sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="Sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
           <td align="right">籍贯</td>
-          <td><input name="Home" type="text" id="Home" value="<%=rs("Home")%>"></td>
+          <td><input name="Home" type="text" id="Home" value="<?php echo($rs["home"]); ?>"></td>
           <td align="right">民族</td>
-          <td><input name="National" type="text" id="National" value="<%=rs("National")%>"></td>
+          <td><input name="National" type="text" id="National" value="<?php echo($rs["national"]); ?>"></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 出生年月</td>
-          <td><input name="Birth" type="text" id="Birth" value="<%=rs("Birth")%>" size="18"></td>
+          <td><input name="Birth" type="text" id="Birth" value="<?php echo($rs["birth"]); ?>" size="18"></td>
           <td align="right">婚姻状况</td>
           <td>
 		  <select name="Marriage" selfValue="婚姻状况">
@@ -466,35 +474,35 @@ if ($action == "edit") {
    		    <option value="民主" <?php if ($rs["Political"] == "民主") { echo("selected"); } ?>>民主</option>
   		  </select> </td>
           <td align="right" width="10%">加入时间</td>
-          <td><input name="Political_date" type="text" id="Political_date" value="<%=rs("Political_date")%>"></td>
+          <td><input name="Political_date" type="text" id="Political_date" value="<?php echo($rs["political_date"]); ?>"></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 文化程度</td>
-          <td><input name="Culture" type="text" id="Culture" value="<%=rs("Culture")%>" size="18"></td>
+          <td><input name="Culture" type="text" id="Culture" value="<?php echo($rs["culture"]); ?>" size="18"></td>
           <td align="right">毕业学校</td>
-          <td><input name="School" type="text" id="School" value="<%=rs("School")%>"></td>
+          <td><input name="School" type="text" id="School" value="<?php echo($rs["school"]); ?>"></td>
           <td align="right">毕业时间</td>
-          <td><input name="Graduate" type="text" id="Graduate" value="<%=rs("Graduate")%>"></td>
+          <td><input name="Graduate" type="text" id="Graduate" value="<?php echo($rs["graduate"]); ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><input name="Address" type="text" id="Address" value="<%=rs("Address")%>"></td>
+          <td><input name="Address" type="text" id="Address" value="<?php echo($rs["adress"]); ?>"></td>
           <td align="right">联系电话</td>
-          <td><input name="Phone" type="text" id="Phone" value="<%=rs("Phone")%>"></td>
+          <td><input name="Phone" type="text" id="Phone" value="<?php echo($rs["phone"]); ?>"></td>
           <td align="right">Email</td>
-          <td><input name="Email" type="text" id="Email" value="<%=rs("Email")%>"></td>
+          <td><input name="Email" type="text" id="Email" value="<?php echo($rs["email"]); ?></td>
           <td align="right">聊天号</td>
-          <td><input name="IM" type="text" id="IM" value="<%=rs("IM")%>"></td>
+          <td><input name="IM" type="text" id="IM" value="<?php echo($rs["im"]); ?></td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td align="right"> 所在部门</td>
           <td><select name="Department" selfvalue="所在部门">
             <option value="">请选择</option>
-            <option value="业务部" <% if ($rs["department"] == "业务部") { echo("Selected"); } ?>>业务部</option>
-            <option value="客服部" <% if ($rs["department"] == "客服部") { echo("Selected"); } ?>>客服部</option>
-            <option value="技术部" <% if ($rs["department"] == "技术部") { echo("Selected"); } ?>>技术部</option>
+            <option value="业务部" <?php if ($rs["department"] == "业务部") { echo("Selected"); } ?>>业务部</option>
+            <option value="客服部" <?php if ($rs["department"] == "客服部") { echo("Selected"); } ?>>客服部</option>
+            <option value="技术部" <?php if ($rs["department"] == "技术部") { echo("Selected"); } ?>>技术部</option>
           </select>
             <font color="red">*</font></td>
           <td align="right">担任职务</td>
@@ -514,19 +522,19 @@ if ($action == "edit") {
           </select>
             <font color="red">*</font></td>
           <td align="right">入职时间</td>
-          <td><input name="Entrance" type="text" id="Entrance" value="<%=rs("Entrance")%>" size="18"> 
+          <td><input name="Entrance" type="text" id="Entrance" value="<?php echo($rs["entrance"]); ?>" size="18"> 
           <font color="red">*</font></td>
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
           <td width="10%" align="right"> 备注</td>
-          <td colspan="7" align="left"><textarea name="Comment" cols="100" rows="5" id="Comment"><%=rs("Comment")%></textarea></td>
+          <td colspan="7" align="left"><textarea name="Comment" cols="100" rows="5" id="Comment"><?php echo($rs["comment"]); ?></textarea></td>
         </tr>
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">
 		  <input type="hidden" name="action" value="yes">
           <input type="button" name="Submit2" value="提交" onClick="check()">
           <input type="button" name="Submit2" value="返回" onClick="history.back(-1)">
-		  <input name="id" type="hidden" id="id" value="<%=rs("id")%>">		  </td>
+		  <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">		  </td>
 		</tr>
   		</form>
   	</table>
@@ -537,78 +545,82 @@ if ($action == "edit") {
 <br>
 <?php
 if ($action == "view") {
-	//set rs=server.createobject("adodb.recordset") 
 	$sql = "select * from Staff where id=" . $_REQUEST["id"];
-	//rs.open sql,conn,1,1
+    $result = mysql_query($sql, $con);
+    if ($result !== false) {
+        $rs = mysql_fetch_assoc($result);
+    } else {
+        $rs = null;
+    }
 	if (!$rs) {
-%>
+?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
 		<tr align="center" bgcolor="#F2FDFF">
 		  <td colspan="12" class="optiontitle">职员信息</td>
 		</tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right">职员工号</td>
-          <td width="20%"><%=rs("Sid")%></td>
+          <td width="20%"><?php echo($rs["sid"]); ?></td>
           <td width="10%" align="right">职员姓名</td>
-          <td width="15%" ><%=rs("Sname")%></td>
+          <td width="15%" ><?php echo($rs["sname"]); ?></td>
           <td width="10%" align="right">查询密码</td>
-          <td width="15%"><%=rs("Pws")%></td>
+          <td width="15%"><?php echo($rs["pws"]); ?></td>
           <td width="10%" align="right">职员状态</td>
-          <td width="10%"><%=rs("State")%></td>
+          <td width="10%"><?php echo($rs["state"]); ?></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right">身份证号</td>
-          <td><%=rs("Idcard")%></td>
+          <td><?php echo($rs["idcard"]); ?></td>
           <td align="right">性别</td>
-          <td><%=rs("Sex")%></td>
+          <td><?php echo($rs["sex"]); ?></td>
           <td align="right">籍贯</td>
-          <td><%=rs("Home")%></td>
+          <td><?php echo($rs["home"]); ?></td>
           <td align="right">民族</td>
-          <td><%=rs("National")%></td>
+          <td><?php echo($rs["national"]); ?></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 出生年月</td>
-          <td><%=rs("Birth")%></td>
+          <td><?php echo($rs["birth"]); ?></td>
           <td align="right">婚姻状况</td>
-          <td><%=rs("Marriage")%></td>
+          <td><?php echo($rs["marriage"]); ?></td>
           <td align="right" width="10%">政治面貌</td>
-          <td><%=rs("Political")%></td>
+          <td><?php echo($rs["political"]); ?></td>
           <td align="right" width="10%">加入时间</td>
-          <td><%=rs("Political_date")%></td>
+          <td><?php echo($rs["political_date"]); ?></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 文化程度</td>
-          <td><%=rs("Culture")%></td>
+          <td><?php echo($rs["culture"]); ?></td>
           <td align="right">毕业学校</td>
-          <td><%=rs("School")%></td>
+          <td><?php echo($rs["school"]); ?></td>
           <td align="right">毕业时间</td>
-          <td><%=rs("Graduate")%></td>
+          <td><?php echo($rs["graduate"]); ?></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><%=rs("Address")%></td>
+          <td><?php echo($rs["addrss"]); ?></td>
           <td align="right">联系电话</td>
-          <td><%=rs("Phone")%></td>
+          <td><?php echo($rs["phone"]); ?></td>
           <td align="right">Email</td>
-          <td><%=rs("Email")%></td>
+          <td><?php echo($rs["email"]); ?></td>
           <td align="right">聊天号</td>
-          <td><%=rs("IM")%></td>
+          <td><?php echo($rs["im"]); ?></td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td align="right"> 所在部门</td>
-          <td><%=rs("Department")%></td>
+          <td><?php echo($rs["department"]); ?></td>
           <td align="right">担任职务</td>
-          <td><%=rs("Jobs")%></td>
+          <td><?php echo($rs["jobs"]); ?></td>
           <td align="right">职称</td>
-          <td><%=rs("Duty")%></td>
+          <td><?php echo($rs["duty"]); ?></td>
           <td align="right">入职时间</td>
-          <td><%=rs("Entrance")%></td>
+          <td><?php echo($rs["entrance"]); ?></td>
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
           <td width="10%" align="right"> 备注</td>
-          <td colspan="7" align="left"><%=rs("Comment")%></td>
+          <td colspan="7" align="left"><?php echo($rs["comment"]); ?></td>
         </tr>
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">

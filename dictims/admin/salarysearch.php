@@ -4,7 +4,7 @@
 $syear = !empty($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
 $smonth = !empty($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
 $lx = !empty($_REQUEST["lx"]) ? trim($_REQUEST["lx"]) : "";
-$keywords = !empty($_REQUEST("keywords")) ? trim($_REQUEST("keywords")) : "";
+$keywords = !empty($_REQUEST["keywords"]) ? trim($_REQUEST["keywords"]) : "";
 ?>
 <html>
 <head>
@@ -42,7 +42,7 @@ window.location = params ;
 			</select>
 			<select name="Smonth">
 			<option value="">-请选择月份-</option>
-			<?php for ($m = 1; $m <= 12; $m++) { %>
+			<?php for ($m = 1; $m <= 12; $m++) { ?>
 			<option value="<?php echo($m); ?>"><?php echo($m); ?></option>
 			<?php } ?>
 			</select>
@@ -115,7 +115,7 @@ if ($keywords != "") {
 	} else {
 ?>
         <tr align="center" bgcolor="#FFFFFF">
-          <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><%=Syear%>-<%=Smonth%>-<%=keywords%>-</font> 信息！</td>
+          <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><?php echo($syear); ?>-<?php echo($smonth); ?>-<?php echo($keywords); ?>-</font> 信息！</td>
         </tr>
 <?php
 	}

@@ -2,7 +2,7 @@
 <?php include('inc/conn.php'); ?> 
 <?php
 $keywords = !empty($_REQUEST["keywords"]) ? $_REQUEST["keywords"] : "";
-$lx = !empty($_REQUEST["LX"]) ? $_REQUEST["LX"] : "";
+$lx = !empty($_REQUEST["lx"]) ? $_REQUEST["lx"] : "";
 ?>
 <html>
 <head>
@@ -85,7 +85,7 @@ if ($keywords != "") {
 	} else {
 ?>
         <tr align="center" bgcolor="#FFFFFF">
-          <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><%=keywords%></font> 信息！</td>
+          <td colspan="8">对不起！目前库中还没有 <font color="#FF0000"><?php echo($keywords); ?></font> 信息！</td>
         </tr>
 <?php
 	}

@@ -8,14 +8,26 @@ if (!empty($_GET['action']) and $_REQUEST['action'] == 'login') {
     $checkcode = str_replace("'", "", trim($_REQUEST['checkcode']));
 
     if ($checkcode == "") {
-       die("<script>alert('验证码不能为空！');location.href='index.php'</script>");
+    	echo("<head>");
+    	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+    	echo("<script>alert('验证码不能为空！');location.href='index.php'</script>");
+		echo("</head>");
+		exit;
     }
     if (empty($_SESSION['checkcode']) or $_SESSION['checkcode'] == "") {
-       die("<script>alert('验证码失效，请重新输入！');location.href='index.php'</script>");
+       	echo("<head>");
+    	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+    	echo("<script>alert('验证码失效，请重新输入！');location.href='index.php'</script>");
+    	echo("</head>");
+		exit;
     }
     if (!empty($_SESSION['checkcode']) and $checkcode != $_SESSION['checkcode']) {
-        die("<script>alert('您输入的验证码与系统产生的不一致，请重新输入！');location.href='index.php'</script>");
-    }
+        echo("<head>");
+    	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+    	echo("<script>alert('您输入的验证码与系统产生的不一致，请重新输入！');location.href='index.php'</script>");
+    	echo("</head>");
+		exit;
+	}
     $sid = $_REQUEST['sid'];
     $idcard = $_REQUEST['idcard'];
     $pws = $_REQUEST['pws'];
@@ -25,7 +37,11 @@ if (!empty($_GET['action']) and $_REQUEST['action'] == 'login') {
 
 if (strpos($sid, "or") !== false or strpos($idcard, "or") !== false or strpos($pws, "or") !== false or 
     strpos($sid, "and") !== false or strpos($idcard, "and") !== false or strpos($pws, "and") !== false) {
-    echo("<script>alert('没事别搞人家后台，谢谢！\\n否则一切后果自负！');window.close();</script>");
+    echo("<head>");
+	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+	echo("<script>alert('没事别搞人家后台，谢谢！\\n否则一切后果自负！');window.close();</script>");
+	echo("</head>");
+	exit;
 } else {
     if ($sid != "") {
         $sql = "select * from staff where sid='" . trim($sid) . "' and pws='" . trim($pws) . "' ";
@@ -39,9 +55,13 @@ if (strpos($sid, "or") !== false or strpos($idcard, "or") !== false or strpos($p
         $rs = null;
     }
     if (!$rs) {
-        echo("<script language='javascript'>alert('对不起，工号或身份证号不匹配!\\n \\n请检查，返回重新输入！');");
+        echo("<head>");
+		echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+		echo("<script language='javascript'>alert('对不起，工号或身份证号不匹配!\\n \\n请检查，返回重新输入！');");
         echo("location.href='index.php'</script>");
-    } else {
+    	echo("</head>");
+		exit;
+	} else {
        $_SESSION['id'] = $rs['id'];
        $_SESSION['userid'] = $rs['sid'];
        $_SESSION['username'] = $rs['sname'];

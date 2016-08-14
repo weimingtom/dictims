@@ -31,27 +31,27 @@ window.location = params ;
           <td class="optiontitle" colspan="8">查询职员工资</td>	
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
-          <form name="search" method="get" action="salarysearch.php">
+          <form id="search" name="search" method="get" action="salarysearch.php">
             <td height="30" colspan="8">
 			请选择查询信息：
-			<select name="Syear">
-			<option  value="">-请选择年份-</option>
+			<select name="syear">
+			<option value="">-请选择年份-</option>
 			<?php for($y = 2011; $y <= 2012; $y++) { ?>
 			<option value="<?php echo($y); ?>"><?php echo($y); ?></option>
 			<?php } ?>
 			</select>
-			<select name="Smonth">
+			<select name="smonth">
 			<option value="">-请选择月份-</option>
 			<?php for ($m = 1; $m <= 12; $m++) { ?>
 			<option value="<?php echo($m); ?>"><?php echo($m); ?></option>
 			<?php } ?>
 			</select>
-			<select name="LX">
+			<select name="lx">
              <option value="Sname">职员姓名</option>
              <option value="Sid">职员工号</option>
             </select>
 			<input name="keywords" type="text" id="keywords" size="30"> 
-            <input name="Query" type="submit" id="Query" value="查 询"></td>
+            <input name="query" type="submit" id="query" value="查 询"></td>
           </form>
         </tr> 
 <?php

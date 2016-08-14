@@ -60,7 +60,7 @@ return true;
                       <td align=right>验证码：</td>
                       <td><input class=pwd id="verifycode" style="width: 40px" maxlength=4 name="verifycode"><img src="yz.php" border='0' onclick="this.src='yz.php'" alt='点击刷新验证码' /></td></tr>
                     <tr align=middle>
-                      <td colspan=2 height=40><input class="btn" type="submit" value="提 交" name="Submit"> <input  class="btn" type="reset" value="取 消" name="reset"></td>
+                      <td colspan=2 height=40><input class="btn" type="submit" value="提 交" name="submit_btn"> <input  class="btn" type="reset" value="取 消" name="reset"></td>
 					</tr>
 				    </tbody>
 				   </table>

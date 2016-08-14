@@ -25,8 +25,8 @@ $username = !empty($_REQUEST["username"]) ? $_REQUEST["username"] : "";
 $password = !empty($_REQUEST["password1"]) ? $_REQUEST["password1"] : "";
 if ($action == "yes") {
  	if ($id == "") {
-   		$sql = "select username from admin where Username='" .
-   		 	trim($_REQUEST("username")) . "'";
+   		$sql = "select username from admin where username='" .
+   		 	((!empty($_REQUEST["username"])) ? trim($_REQUEST["username"]) : "") . "'";
 		$result = mysql_query($sql, $con);
 		if ($result !== false) {
 		    $rsCheck = mysql_fetch_assoc($result);
@@ -36,7 +36,7 @@ if ($action == "yes") {
 	    if (!rsCheck) {
 	      	die("<script language='javascript'>alert('" . trim($_REQUEST["username"]) . "用户名称已存在！');history.back(-1);</script>");
 	    }
-   		$sql = "insert into admin (username, password) values ('" . username ."', '" . md5_str($password) . "') "; 
+   		$sql = "insert into admin (username, password) values ('" . $username ."', '" . md5_str($password) . "') "; 
    	} else {
    		$sql = "update admin set username = '" . $username . "', password = '" . md5_str($password) . "' where id=" . $id . ""; 
 	}
@@ -51,45 +51,38 @@ if ($action == "yes") {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language="Javascript">
-function check()
-{
-
-  if (document.add.Username.value=="")
-     {
-      alert("请输入帐户名！")
-      document.add.Username.focus()
-      document.add.Username.select()
-      return
+function check() {
+	if (document.add.username.value == "") {
+  		alert("请输入帐户名！");
+      	document.add.username.focus();
+      	document.add.username.select();
+      	return;
+  	}
+  	if (document.add.password1.value == "") {
+      	alert("请输入您的密码！");
+      	document.add.password1.focus();
+      	document.add.password1.select();		
+      	return;
+  	}
+  	if (document.add.password1.value.length < 6) {
+      	alert("请填写管理员密码(字符数在6-16位之间)！");
+      	document.add.password1.focus();
+      	document.add.password1.select();		
+      	return;
+  	}
+  	if (document.add.password1.value.length > 16) {
+      	alert("请填写管理员密码(字符数在6-16位之间)！");
+      	document.add.password1.focus();
+      	document.add.password1.select();		
+      	return;
+	}
+  	if (document.add.password1.value != document.add.password2.value) {
+      	alert("您输入的两次密码不相同！");
+      	document.add.password2.focus();
+      	document.add.password2.select();		
+      	return;
      }
-  if (document.add.Password1.value=="")
-     {
-      alert("请输入您的密码！")
-      document.add.Password1.focus()
-      document.add.Password1.select()		
-      return
-     }
-  if (document.add.Password1.value.length<6)
-     {
-      alert("请填写管理员密码(字符数在6-16位之间)！")
-      document.add.Password1.focus()
-      document.add.Password1.select()		
-      return
-     }
-  if (document.add.Password1.value.length>16)
-     {
-      alert("请填写管理员密码(字符数在6-16位之间)！")
-      document.add.Password1.focus()
-      document.add.Password1.select()		
-      return
-     }
-  if (document.add.Password1.value!=document.add.Password2.value)
-     {
-      alert("您输入的两次密码不相同！")
-      document.add.Password2.focus()
-      document.add.Password2.select()		
-      return
-     }
-     document.add.submit()
+     document.add.submit();
 }
 </script>
 </head>
@@ -102,27 +95,27 @@ if ($action == "add") {
 ?>
 	<br>
       <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-        <form name="add" method="post" action="admin.php">
+        <form id="add" name="add" method="post" action="admin.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="2"  class="optiontitle">添加用户</td>
         </tr>
         <tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">用户名：</td>
-          <td align="left"><input name="Username" type="text" id="Username"></td>
+          <td align="left"><input name="username" type="text" id="username"></td>
         </tr>
 		<tr align='center' bgcolor='#FFFFFF'>
 		  <td align='right' bgcolor="#FFFFFF"> 登陆密码：</td>
-		  <td align='left'><input name="Password1" type="password" id="Password1"> <font color="red">*</font>6-16个字符</td>
+		  <td align='left'><input name="password1" type="password" id="password1"> <font color="red">*</font>6-16个字符</td>
 		</tr>
 		<tr align='center' bgcolor='#FFFFFF'>
 		  <td align='right' bgcolor="#FFFFFF"> 密码确认：</td>
-		  <td align='left'><input name="Password2" type="password" id="Password2"> <font color="red">*</font></td>
+		  <td align='left'><input name="password2" type="password" id="password2"> <font color="red">*</font></td>
 		</tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="2" >
 		     <INPUT TYPE="hidden" name="action" value="yes">
-            <input type="button" name="Submit" value="提交" onClick="check()">
-          	<input type="button" name="Submit2" value="返回" onClick="history.back(-1)"></td>
+            <input type="button" name="submit_btn" value="提交" onClick="check()">
+          	<input type="button" name="submit_btn2" value="返回" onClick="history.back(-1)"></td>
         </tr>
 		</form>
       </table> 
@@ -179,28 +172,28 @@ if ($action == "edit") {
 ?>
 <br>
 	  <table width="96%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-        <form name="add" method="post" action="admin.php">
+        <form id="add" name="add" method="post" action="admin.php">
 		<tr align="center" bgcolor="#F2FDFF">
 		  <td colspan=2  class="optiontitle">修改用户</td>
 		</tr>
 		<tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">用户名：</td>
-          <td align="left"><input name="Username" type="text" id="Username" value="<?php echo($rs["username"]); ?>"></td>
+          <td align="left"><input name="username" type="text" id="username" value="<?php echo($rs["username"]); ?>"></td>
         </tr>
 		<tr align='center' bgcolor='#FFFFFF'>
 		  <td align='right' bgcolor="#FFFFFF"> 登陆密码：</td>
-		  <td align='left'><input name="Password1" type="password" id="Password1"> 
+		  <td align='left'><input name="password1" type="password" id="password1"> 
 		  <font color="red">*</font>6-16个字符</td>
 		</tr>
 		<tr align='center' bgcolor='#FFFFFF'>
 		  <td align='right' bgcolor="#FFFFFF"> 密码确认：</td>
-		  <td align='left'><input name="Password2" type="password" id="Password2"> 
+		  <td align='left'><input name="password2" type="password" id="password2"> 
 		  <font color="red">*</font></td>
 		</tr>
 	    <tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="2">
-		   <input type="hidden" name="action" value="yes"> <input type="button" name="Submit" value="提交" onClick="check()">
-           <input type="button" name="Submit2"value="返回" onClick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">
+		   <input type="hidden" name="action" value="yes"> <input type="button" name="submit_btn" value="提交" onClick="check()">
+           <input type="button" name="submit_btn2"value="返回" onClick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">
 		 </td>
 	   </tr>
   	 </form>

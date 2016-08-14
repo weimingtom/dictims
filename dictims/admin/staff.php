@@ -107,89 +107,68 @@ window.location = params ;
 }
 </script>
 <script language=JavaScript type=text/JavaScript>
-function check()
-{
-  if (document.add.Sid.value=="")
-     {
-      alert("请填写职员工号！")
-      document.add.Sid.focus()
-      document.add.Sid.select()
-      return
-     } 
-	 
-  if (document.add.Pws.value=="")
-     {
-      alert("请填写职员查询密码！")
-      document.add.Pws.focus()
-      document.add.Pws.select()
-      return
-     } 
-
-  if (document.add.State.value=="")
-     {
-      alert("请填写职员状态！")
-      document.add.State.focus()
-      document.add.State.select()
-      return
-     } 
-	 
-  if (document.add.Sname.value=="")
-     {
-      alert("请填写职员姓名！")
-      document.add.Sname.focus()
-      document.add.Sname.select()
-      return
-     } 
-
-  if (document.add.Idcard.value=="")
-     {
-      alert("请填写职员身份证号！")
-      document.add.Idcard.focus()
-      document.add.Idcard.select()
-      return
-     } 
-	 
-  if (document.add.Sex.value=="")
-     {
-      alert("请填写职员性别！")
-      document.add.Sex.focus()
-      document.add.Sex.select()
-      return
-     } 
-	 
-  if (document.add.Department.value=="")
-     {
-      alert("请填写职员所在部门！")
-      document.add.Department.focus()
-      document.add.Department.select()
-      return
-     } 
-
-  if (document.add.Jobs.value=="")
-     {
-      alert("请填写职员担任职务！")
-      document.add.Jobs.focus()
-      document.add.Jobs.select()
-      return
-     } 
-
-  if (document.add.Duty.value=="")
-     {
-      alert("请填写职员职称！")
-      document.add.Duty.focus()
-      document.add.Duty.select()
-      return
-     } 
-	 
-  if (document.add.Entrance.value=="")
-     {
-      alert("请填写职员入职时间！")
-      document.add.Entrance.focus()
-      document.add.Entrance.select()
-      return
-     } 
-     document.add.submit()
-	 
+function check() {
+  	if (document.add.sid.value == "") {
+      	alert("请填写职员工号！");
+      	document.add.sid.focus();
+      	document.add.sid.select();
+      	return;
+	} 
+  	if (document.add.pws.value == "") {
+      	alert("请填写职员查询密码！");
+      	document.add.pws.focus();
+     	document.add.pws.select();
+      	return
+    } 
+	if (document.add.state.value == "") {
+      	alert("请填写职员状态！");
+      	document.add.state.focus();
+      	document.add.state.select();
+      	return;
+    }
+  	if (document.add.sname.value == "") {
+      	alert("请填写职员姓名！");
+      	document.add.sname.focus();
+      	document.add.sname.select();
+    	return;
+    } 
+	if (document.add.idcard.value == "") {
+      	alert("请填写职员身份证号！");
+      	document.add.idcard.focus();
+      	document.add.idcard.select();
+    	return;
+    }
+    if (document.add.sex.value == "") {
+      	alert("请填写职员性别！");
+      	document.add.sex.focus();
+      	document.add.sex.select();
+      	return;
+	} 
+	if (document.add.department.value == "") {
+      	alert("请填写职员所在部门！");
+      	document.add.department.focus();
+      	document.add.department.select();
+      	return;
+    }
+  	if (document.add.jobs.value == "") {
+      	alert("请填写职员担任职务！");
+      	document.add.jobs.focus();
+      	document.add.jobs.select();
+    	return;
+    } 
+	if (document.add.Duty.value == "") {
+      	alert("请填写职员职称！");
+      	document.add.duty.focus();
+      	document.add.duty.select();
+      	return;
+	}
+	if (document.add.entrance.value == "") {
+      	alert("请填写职员入职时间！");
+      	document.add.entrance.focus();
+      	document.add.entrance.select();
+      	return;
+    } 
+    document.add.submit(); 
 }
 </script>
 </head>
@@ -201,22 +180,22 @@ function check()
 if ($action == "add") {
 ?><BR>
 	<table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-      <form name="add" method="post" action="staff.php">
+      <form id="add" name="add" method="post" action="staff.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="8"  class="optiontitle">添加职员</td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right"> 职员工号</td>
-          <td width="15%"><input name="Sid" type="text" id="Sid" value="" size="18">
+          <td width="15%"><input name="sid" type="text" id="sid" value="" size="18">
               <font color="red">*</font></td>
           <td width="10%" align="right"> 职员姓名</td>
-          <td width="15%" ><input name="Sname" type="text" id="Sname" value="" size="18">
+          <td width="15%" ><input name="sname" type="text" id="sname" value="" size="18">
               <font color="red">*</font></td>
           <td width="10%" align="right">查询密码</td>
-          <td width="15%" ><input name="Pws" type="text" id="Pws" value="123456" size="18">
+          <td width="15%" ><input name="pws" type="text" id="pws" value="123456" size="18">
               <font color="red">*</font></td>
           <td width="10%" align="right">职员状态</td>
-          <td width="15%"><select name="State" id="State" selfvalue="职员状态">
+          <td width="15%"><select name="state" id="state" selfvalue="职员状态">
               <option value="在职">在职</option>
               <option value="离职">离职</option>
               <option value="产假">产假</option>
@@ -226,26 +205,26 @@ if ($action == "add") {
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right">身份证号</td>
-          <td ><input name="Idcard" type="text" id="Idcard" value="" size="18">
+          <td ><input name="idcard" type="text" id="idcard" value="" size="18">
               <font color="red">*</font></td>
           <td align="right">性别</td>
-          <td><input type="radio" name="Sex" value="男" />男<input type="radio" name="Sex" value="女" />女<font color="red">*</font></td>
+          <td><input type="radio" name="sex" value="男" />男<input type="radio" name="sex" value="女" />女<font color="red">*</font></td>
           <td align="right">籍贯</td>
-          <td><input name="Home" type="text" id="Home" value=""></td>
+          <td><input name="home" type="text" id="home" value=""></td>
           <td align="right">民族</td>
-          <td><input name="National" type="text" id="National" value=""></td>
+          <td><input name="national" type="text" id="national" value=""></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 出生年月</td>
-          <td><input name="Birth" type="text" id="Birth" value=""></td>
+          <td><input name="birth" type="text" id="birth" value=""></td>
           <td align="right">婚姻状况</td>
-          <td><select name="Marriage" id="Marriage" selfvalue="婚姻状况">
+          <td><select name="marriage" id="marriage" selfvalue="婚姻状况">
               <option value="">请选择</option>
               <option value="未婚">未婚</option>
               <option value="已婚">已婚</option>
           </select></td>
           <td align="right">政治面貌</td>
-          <td><select name="Political" id="Political" selfvalue="政治面貌">
+          <td><select name="political" id="political" selfvalue="政治面貌">
               <option value="">请选择</option>
               <option value="无">无</option>
               <option value="团员">团员</option>
@@ -253,31 +232,31 @@ if ($action == "add") {
               <option value="民主">民主</option>
             </select>          </td>
           <td align="right">加入时间</td>
-          <td><input name="Political_date" type="text" id="Political_date" value=""></td>
+          <td><input name="political_date" type="text" id="political_date" value=""></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 文化程度</td>
-          <td><input name="Culture" type="text" id="Culture" value=""></td>
+          <td><input name="culture" type="text" id="culture" value=""></td>
           <td align="right">毕业学校</td>
-          <td><input name="School" type="text" id="School" value=""></td>
+          <td><input name="school" type="text" id="school" value=""></td>
           <td align="right">毕业时间</td>
-          <td><input name="Graduate" type="text" id="Graduate" value=""></td>
+          <td><input name="graduate" type="text" id="graduate" value=""></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><input name="Address" type="text" id="Address" value=""></td>
+          <td><input name="address" type="text" id="address" value=""></td>
           <td align="right">联系电话</td>
-          <td><input name="Phone" type="text" id="Phone" value=""></td>
+          <td><input name="phone" type="text" id="phone" value=""></td>
           <td align="right">Email</td>
-          <td><input name="Email" type="text" id="Email" value=""></td>
+          <td><input name="email" type="text" id="email" value=""></td>
           <td align="right">聊天号</td>
-          <td><input name="IM" type="text" id="IM" value=""></td>
+          <td><input name="im" type="text" id="im" value=""></td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td align="right"> 所在部门</td>
-          <td><select name="Department" id="Department" selfvalue="所在部门">
+          <td><select name="department" id="department" selfvalue="所在部门">
               <option value="">请选择</option>
               <option value="业务部">业务部</option>
               <option value="客服部">客服部</option>
@@ -285,7 +264,7 @@ if ($action == "add") {
             </select>
               <font color="red">*</font></td>
           <td align="right">担任职务</td>
-          <td><select name="Jobs" id="Jobs" selfvalue="担任职务">
+          <td><select name="jobs" id="jobs" selfvalue="担任职务">
               <option value="">请选择</option>
               <option value="技术员">技术员</option>
               <option value="主管">主管</option>
@@ -293,7 +272,7 @@ if ($action == "add") {
             </select>
               <font color="red">*</font></td>
           <td align="right">职称</td>
-          <td><select name="Duty" id="Duty" selfvalue="职称">
+          <td><select name="duty" id="duty" selfvalue="职称">
               <option value="">请选择</option>
               <option value="初级">初级</option>
               <option value="中级">中级</option>
@@ -301,17 +280,17 @@ if ($action == "add") {
             </select>
               <font color="red">*</font></td>
           <td align="right">入职时间</td>
-          <td><input name="Entrance" type="text" id="Entrance" size="18">
+          <td><input name="entrance" type="text" id="entrance" size="18">
               <font color="red">*</font></td>
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
           <td width="10%" align="right"> 备注</td>
-          <td colspan="7" align="left"><textarea name="Comment" cols="100" rows="5" id="Comment"></textarea></td>
+          <td colspan="7" align="left"><textarea name="comment" cols="100" rows="5" id="comment"></textarea></td>
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="8" ><input type="hidden" name="action" value="yes">
-              <input type="button" name="Submit" value="提交" onClick="check()">
-              <input type="button" name="Submit22" value="返回" onClick="history.back(-1)"></td>
+              <input type="button" name="submit_btn" value="提交" onClick="check()">
+              <input type="button" name="submit22" value="返回" onClick="history.back(-1)"></td>
         </tr>
       </form>
 	  </table>
@@ -366,7 +345,7 @@ if ($action == "list") {
 				 	break; 
 				 }
 ?>
-        <form name="del" action="" method="post">
+        <form id="del" name="del" action="" method="post">
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
 		  <td><input type="checkbox" name="id" value="<?php echo($rs["id"]); ?>"></td>
 		  <td><?php echo($rs["sid"]); ?></td>
@@ -385,7 +364,7 @@ if ($action == "list") {
 		  <td colspan="8">&nbsp;&nbsp;
 		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
 		   <input name="wor" type="hidden" id="wor" value="del" />
-		   <input type="submit" name="Submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
+		   <input type="submit" name="submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
 		  </td>
 		</tr>
 		</form>
@@ -411,7 +390,7 @@ if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($
 ?>
 <?php
 if ($action == "edit") {
-	$sql="select * from staff where id=" . $_REQUEST("id");
+	$sql="select * from staff where id=" . ((!empty($_REQUEST["id"]) ? $_REQUEST["id"] : "0"));
     $result = mysql_query($sql, $con);
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
@@ -421,22 +400,22 @@ if ($action == "edit") {
 	if (!$rs) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-       <form name="add" method="post" action="staff.php">
+       <form id="add" name="add" method="post" action="staff.php">
 		<tr align="center" bgcolor="#F2FDFF">
 		  <td colspan="12" class="optiontitle">修改职员</td>
 		</tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right"> 职员工号</td>
-          <td width="15%"><input name="Sid" type="text" id="Sid" value="<?php echo($rs["sid"]); ?>" size="10"> <font color="red">*</font></td>
+          <td width="15%"><input name="sid" type="text" id="sid" value="<?php echo($rs["sid"]); ?>" size="10"> <font color="red">*</font></td>
           <td width="10%" align="right"> 职员姓名</td>
-          <td width="15%"><input name="Sname" type="text" id="Sname" value="<?php echo($rs["sname"]); ?>" size="18"> 
+          <td width="15%"><input name="sname" type="text" id="sname" value="<?php echo($rs["sname"]); ?>" size="18"> 
           <font color="red">*</font></td>
 		  <td width="10%" align="right">查询密码</td>
-          <td width="15%"><input name="Pws" type="text" id="Pws" value="<?php echo($rs["pws"]); ?>" size="16">
+          <td width="15%"><input name="pws" type="text" id="pws" value="<?php echo($rs["pws"]); ?>" size="16">
             <font color="red">*</font></td>
           <td width="10%" align="right">职员状态</td>
           <td width="15%">
-		  <select name="State" selfValue="职员状态">
+		  <select name="state" selfValue="职员状态">
    		    <option value="在职" <?php if ($rs("state") == "在职") { echo("selected"); } ?>>在职</option>
    		    <option value="离职" <?php if ($rs("state") == "离职") { echo("selected"); } ?>>离职</option>
    		    <option value="产假" <?php if ($rs("state") == "产假") { echo("selected"); } ?>>产假</option>
@@ -445,60 +424,60 @@ if ($action == "edit") {
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right">身份证号</td>
-          <td ><input name="Idcard" type="text" id="Idcard" value="<?php echo($rs["idcard"]); ?>" size="18">
+          <td ><input name="idcard" type="text" id="idcard" value="<?php echo($rs["idcard"]); ?>" size="18">
             <font color="red">*</font></td>
           <td align="right">性别</td>
-          <td><input type="radio" name="Sex" value="男"  <?php if ($rs["Sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="Sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
+          <td><input type="radio" name="sex" value="男"  <?php if ($rs["Sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
           <td align="right">籍贯</td>
-          <td><input name="Home" type="text" id="Home" value="<?php echo($rs["home"]); ?>"></td>
+          <td><input name="home" type="text" id="home" value="<?php echo($rs["home"]); ?>"></td>
           <td align="right">民族</td>
-          <td><input name="National" type="text" id="National" value="<?php echo($rs["national"]); ?>"></td>
+          <td><input name="national" type="text" id="national" value="<?php echo($rs["national"]); ?>"></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 出生年月</td>
-          <td><input name="Birth" type="text" id="Birth" value="<?php echo($rs["birth"]); ?>" size="18"></td>
+          <td><input name="birth" type="text" id="birth" value="<?php echo($rs["birth"]); ?>" size="18"></td>
           <td align="right">婚姻状况</td>
           <td>
-		  <select name="Marriage" selfValue="婚姻状况">
+		  <select name="marriage" selfValue="婚姻状况">
    		    <option value="">请选择</option>
-   		    <option value="未婚" <?php if ($rs["Marriage"] == "未婚") { echo("selected"); } ?>>未婚</option>
-   		    <option value="已婚" <?php if ($rs["Marriage"] == "已婚") { echo("selected"); } ?>>已婚</option>
+   		    <option value="未婚" <?php if ($rs["marriage"] == "未婚") { echo("selected"); } ?>>未婚</option>
+   		    <option value="已婚" <?php if ($rs["marriage"] == "已婚") { echo("selected"); } ?>>已婚</option>
   		  </select></td>
           <td align="right" width="10%">政治面貌</td>
           <td>
-		  <select name="Political" selfValue="政治面貌">
+		  <select name="political" selfValue="政治面貌">
    		    <option value="">请选择</option>
-   		    <option value="无" <?php if ($rs["Political"] == "无") { echo("selected"); } ?>>无</option>
-   		    <option value="团员" <?php if ($rs["Political"] == "团员") { echo("selected"); } ?>>团员</option>
-   		    <option value="党员" <?php if ($rs["Political"] == "党员") { echo("selected"); } ?>>党员</option>
-   		    <option value="民主" <?php if ($rs["Political"] == "民主") { echo("selected"); } ?>>民主</option>
+   		    <option value="无" <?php if ($rs["political"] == "无") { echo("selected"); } ?>>无</option>
+   		    <option value="团员" <?php if ($rs["political"] == "团员") { echo("selected"); } ?>>团员</option>
+   		    <option value="党员" <?php if ($rs["political"] == "党员") { echo("selected"); } ?>>党员</option>
+   		    <option value="民主" <?php if ($rs["political"] == "民主") { echo("selected"); } ?>>民主</option>
   		  </select> </td>
           <td align="right" width="10%">加入时间</td>
-          <td><input name="Political_date" type="text" id="Political_date" value="<?php echo($rs["political_date"]); ?>"></td>
+          <td><input name="political_date" type="text" id="political_date" value="<?php echo($rs["political_date"]); ?>"></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 文化程度</td>
-          <td><input name="Culture" type="text" id="Culture" value="<?php echo($rs["culture"]); ?>" size="18"></td>
+          <td><input name="culture" type="text" id="culture" value="<?php echo($rs["culture"]); ?>" size="18"></td>
           <td align="right">毕业学校</td>
-          <td><input name="School" type="text" id="School" value="<?php echo($rs["school"]); ?>"></td>
+          <td><input name="school" type="text" id="school" value="<?php echo($rs["school"]); ?>"></td>
           <td align="right">毕业时间</td>
-          <td><input name="Graduate" type="text" id="Graduate" value="<?php echo($rs["graduate"]); ?>"></td>
+          <td><input name="graduate" type="text" id="graduate" value="<?php echo($rs["graduate"]); ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><input name="Address" type="text" id="Address" value="<?php echo($rs["adress"]); ?>"></td>
+          <td><input name="address" type="text" id="address" value="<?php echo($rs["adress"]); ?>"></td>
           <td align="right">联系电话</td>
-          <td><input name="Phone" type="text" id="Phone" value="<?php echo($rs["phone"]); ?>"></td>
+          <td><input name="phone" type="text" id="phone" value="<?php echo($rs["phone"]); ?>"></td>
           <td align="right">Email</td>
-          <td><input name="Email" type="text" id="Email" value="<?php echo($rs["email"]); ?></td>
+          <td><input name="email" type="text" id="email" value="<?php echo($rs["email"]); ?></td>
           <td align="right">聊天号</td>
           <td><input name="IM" type="text" id="IM" value="<?php echo($rs["im"]); ?></td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td align="right"> 所在部门</td>
-          <td><select name="Department" selfvalue="所在部门">
+          <td><select name="department" selfvalue="所在部门">
             <option value="">请选择</option>
             <option value="业务部" <?php if ($rs["department"] == "业务部") { echo("Selected"); } ?>>业务部</option>
             <option value="客服部" <?php if ($rs["department"] == "客服部") { echo("Selected"); } ?>>客服部</option>
@@ -507,14 +486,14 @@ if ($action == "edit") {
             <font color="red">*</font></td>
           <td align="right">担任职务</td>
           <td>
-		  <select name="Jobs" selfValue="担任职务">
+		  <select name="jobs" selfValue="担任职务">
    		    <option value="">请选择</option>
    		    <option value="技术员" <?php if ($rs["jobs"] == "技术员") { echo("selected"); } ?>>技术员</option>
    		    <option value="主管" <?php if ($rs["jobs"] == "主管") { echo("selected"); } ?>>主管</option>
    		    <option value="经理" <?php if ($rs["jobs"] == "经理") { echo("selected"); } ?>>经理</option>
   		  </select><font color="red">*</font></td>
           <td align="right">职称</td>
-          <td><select name="Duty" selfvalue="职称">
+          <td><select name="duty" selfvalue="职称">
             <option value="">请选择</option>
             <option value="初级" <?php if ($rs["duty"] == "初级") { echo("Selected"); } ?>>初级</option>
             <option value="中级" <?php if ($rs["duty"] == "中级") { echo("Selected"); } ?>>中级</option>
@@ -522,18 +501,18 @@ if ($action == "edit") {
           </select>
             <font color="red">*</font></td>
           <td align="right">入职时间</td>
-          <td><input name="Entrance" type="text" id="Entrance" value="<?php echo($rs["entrance"]); ?>" size="18"> 
+          <td><input name="entrance" type="text" id="entrance" value="<?php echo($rs["entrance"]); ?>" size="18"> 
           <font color="red">*</font></td>
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
           <td width="10%" align="right"> 备注</td>
-          <td colspan="7" align="left"><textarea name="Comment" cols="100" rows="5" id="Comment"><?php echo($rs["comment"]); ?></textarea></td>
+          <td colspan="7" align="left"><textarea name="comment" cols="100" rows="5" id="comment"><?php echo($rs["comment"]); ?></textarea></td>
         </tr>
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">
 		  <input type="hidden" name="action" value="yes">
-          <input type="button" name="Submit2" value="提交" onClick="check()">
-          <input type="button" name="Submit2" value="返回" onClick="history.back(-1)">
+          <input type="button" name="submit2" value="提交" onClick="check()">
+          <input type="button" name="submit2" value="返回" onClick="history.back(-1)">
 		  <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">		  </td>
 		</tr>
   		</form>
@@ -624,7 +603,7 @@ if ($action == "view") {
         </tr>
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">
-          <input type="button" name="Submit2" value="返回" onClick="history.back(-1)">		  </td>
+          <input type="button" name="submit2" value="返回" onClick="history.back(-1)">		  </td>
 		</tr>
   	</table>
 <?php

@@ -163,23 +163,23 @@ function check()
 if ($action == "add") { 
 ?><BR>
 	<table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-      <form name="add" method="post" action="salary.php">
+      <form id="add" name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="10"  class="optiontitle"> 添加工资 </td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td width="10%" align="right">职员工号</td>
-          <td align="left" colspan="9"><input name="Sid" type="text" id="Sid" onKeyDown="next()" >
+          <td align="left" colspan="9"><input name="sid" type="text" id="sid" onKeyDown="next()" >
             按回车\TAB键即可输入下一选项</td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td width="10%" align="right">职员姓名</td>
-          <td align="left" colspan="9"><input name="Sname" type="text" id="Sname" onKeyDown="next()" ></td>
+          <td align="left" colspan="9"><input name="sname" type="text" id="sname" onKeyDown="next()" ></td>
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align='right'> 工资年月</td>
-          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<?php echo(date("Y")); ?>" size="5" maxlength="4" >年
-            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<?php echo(date("m")); ?>" size="3" maxlength="2" >月</td>
+          <td colspan="9"><input name="syear" type="text" id="syear" onKeyDown="next()" value="<?php echo(date("Y")); ?>" size="5" maxlength="4" >年
+            <input name="smonth" type="text" id="smonth" onKeyDown="next()" value="<?php echo(date("m")); ?>" size="3" maxlength="2" >月</td>
         </tr>
         <tr align='center' bgcolor='#F2FDFF'>
           <td align="right">工资详单</td>
@@ -195,15 +195,15 @@ if ($action == "add") {
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align="right">所发金额</td>
-          <td><input name="Basic" type="text" id="Basic" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="Perform" type="text" id="Perform" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="JT" type="text" id="JT" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="BT" type="text" id="BT" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="GJJ" type="text" id="GJJ" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="LB" type="text" id="LB" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="YB" type="text" id="YB" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="QT" type="text" id="QT" onKeyDown="next()" size="10" maxlength="6" ></td>
-          <td><input name="Stotal" type="text" id="Stotal" onKeyDown="next()" size="10" maxlength="10" ></td>
+          <td><input name="basic" type="text" id="basic" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="perform" type="text" id="perform" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="jt" type="text" id="jt" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="bt" type="text" id="bt" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="gjj" type="text" id="gjj" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="lb" type="text" id="lb" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="yb" type="text" id="yb" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="qt" type="text" id="q" onKeyDown="next()" size="10" maxlength="6" ></td>
+          <td><input name="stotal" type="text" itd="stotal" onKeyDown="next()" size="10" maxlength="10" ></td>
 	    </tr>
         <tr bgcolor='#FFFFFF'>
           <td colspan="1" align='right'> 添加时间</td>
@@ -211,8 +211,8 @@ if ($action == "add") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
-              <input type="button" name="Submit" value="提交" onClick="check()">
-              <input type="button" name="Submit2" value="返回" onClick="history.back(-1)"></td>
+              <input type="button" name="submit_btn" value="提交" onClick="check()">
+              <input type="button" name="submit_btn2" value="返回" onClick="history.back(-1)"></td>
         </tr>
       </form>
 	  </table>
@@ -269,7 +269,7 @@ if ($action == "list") {
 			 	break; 
 			 }
 ?>
-        <form name="del" action="" method="post">
+        <form id="del" name="del" action="" method="post">
         <tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
 		  <td><input type="checkbox" name="id" value="<?php echo($rs["id"]); ?>"></td>
 		  <td><?php echo($rs["syear"]); ?></td>
@@ -287,7 +287,7 @@ if ($action == "list") {
 		  <td colspan="12">&nbsp;&nbsp;
 		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
 		   <input name="wor" type="hidden" id="wor" value="del" />
-		   <input type="submit" name="Submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
+		   <input type="submit" name="submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
 		  </td>
 		</tr>
 		</form>
@@ -371,7 +371,7 @@ if ($action == "view") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td colspan="10" >
-              <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
+              <input type="button" name="submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
 	  </table>
 <?php
@@ -392,23 +392,23 @@ if ($action == "edit") {
 	if (!$rs) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
-      <form name="add" method="post" action="salary.php">
+      <form id="add" name="add" method="post" action="salary.php">
         <tr align="center" bgcolor="#F2FDFF">
           <td colspan="10"  class="optiontitle"> 修改工资 </td>
         </tr>
         <tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">职员工号</td>
-          <td align="left" colspan="9"><input name="Sid" type="text" id="Sid" onKeyDown="next()" value="<?php echo($rs["sid"]); ?>" >
+          <td align="left" colspan="9"><input name="sid" type="text" id="sid" onKeyDown="next()" value="<?php echo($rs["sid"]); ?>" >
             按回车\TAB键即可输入下一选项</td>
         </tr>
         <tr align="center" bgcolor="#F2FDFF">
           <td width="10%" align="right">职员姓名</td>
-          <td align="left" colspan="9"><input name="Sname" type="text" id="Sname" onKeyDown="next()" value="<?php echo($rs["sname"]); ?>" ></td>
+          <td align="left" colspan="9"><input name="sname" type="text" id="sname" onKeyDown="next()" value="<?php echo($rs["sname"]); ?>" ></td>
         </tr>
         <tr bgcolor='#FFFFFF'>
           <td align='right' bgcolor="#FFFFFF"> 工资年月</td>
-          <td colspan="9"><input name="Syear" type="text" id="Syear" onKeyDown="next()" value="<?php echo($rs["syear"]); ?>" size="5" maxlength="4" >年
-            <input name="Smonth" type="text" id="Smonth" onKeyDown="next()" value="<?php echo($rs["smonth"]); ?>" size="3" maxlength="2" >月</td>
+          <td colspan="9"><input name="syear" type="text" id="syear" onKeyDown="next()" value="<?php echo($rs["syear"]); ?>" size="5" maxlength="4" >年
+            <input name="smonth" type="text" id="smonth" onKeyDown="next()" value="<?php echo($rs["smonth"]); ?>" size="3" maxlength="2" >月</td>
         </tr>
         <tr align='center' bgcolor='#F2FDFF'>
           <td align="right">工资详单</td>
@@ -424,15 +424,15 @@ if ($action == "edit") {
         </tr>
         <tr align='center' bgcolor='#FFFFFF'>
           <td align="right">所发金额</td>
-          <td><input name="Basic" type="text" id="Basic" onKeyDown="next()" value="<?php echo($rs["basic"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="Perform" type="text" id="Perform" onKeyDown="next()" value="<?php echo($rs["perform"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="JT" type="text" id="JT" onKeyDown="next()" value="<?php echo($rs["jt"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="BT" type="text" id="BT" onKeyDown="next()" value="<?php echo($rs["bt"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="GJJ" type="text" id="GJJ" onKeyDown="next()" value="<?php echo($rs["gjj"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="LB" type="text" id="LB" onKeyDown="next()" value="<?php echo($rs["lb"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="YB" type="text" id="YB" onKeyDown="next()" value="<?php echo($rs["yb"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="QT" type="text" id="QT" onKeyDown="next()" value="<?php echo($rs["qt"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="Stotal" type="text" id="Stotal" onKeyDown="next()" value="<?php echo($rs["stotal"]); ?>" size="10" maxlength="10" ></td>
+          <td><input name="basic" type="text" id="basic" onKeyDown="next()" value="<?php echo($rs["basic"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="perform" type="text" id="perform" onKeyDown="next()" value="<?php echo($rs["perform"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="jt" type="text" id="jt" onKeyDown="next()" value="<?php echo($rs["jt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="bt" type="text" id="bt" onKeyDown="next()" value="<?php echo($rs["bt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="gjj" type="text" id="gjj" onKeyDown="next()" value="<?php echo($rs["gjj"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="lb" type="text" id="lb" onKeyDown="next()" value="<?php echo($rs["lb"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="yb" type="text" id="yb" onKeyDown="next()" value="<?php echo($rs["yb"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="gt" type="text" id="qt" onKeyDown="next()" value="<?php echo($rs["qt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="stotal" type="text" id="stotal" onKeyDown="next()" value="<?php echo($rs["stotal"]); ?>" size="10" maxlength="10" ></td>
 	    </tr>
         <tr bgcolor='#FFFFFF'>
           <td colspan="1" align='right' bgcolor="#FFFFFF"> 添加时间</td>
@@ -440,8 +440,8 @@ if ($action == "edit") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
-           <input type="button" name="Submit3" value="提交" onClick="check()">
-           <input type="button" name="Submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
+           <input type="button" name="submit3" value="提交" onClick="check()">
+           <input type="button" name="submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
       </form>
 	  </table>

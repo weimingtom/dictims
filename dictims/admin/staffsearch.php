@@ -29,14 +29,14 @@ window.location = params ;
           <td class="optiontitle" colspan="8">查询职员信息</td>	
         </tr>
         <tr align="center" bgcolor="#FFFFFF">
-          <form name="search" method="get" action="staffsearch.php">
+          <form id="search" name="search" method="get" action="staffsearch.php">
             <td height="30" colspan="8"> <strong>查找类别：</strong>
-			<select name="LX">
-             <option value="Sname">职员姓名</option>
-             <option value="Sid">职员工号</option>
+			<select name="lx">
+             <option value="sname">职员姓名</option>
+             <option value="sid">职员工号</option>
             </select>
 			<input name="keywords" type="text" id="keywords" size="30"> 
-            <input name="Query" type="submit" id="Query" value="查 询"></td>
+            <input name="query" type="submit" id="query" value="查 询"></td>
           </form>
         </tr>  
 <?php

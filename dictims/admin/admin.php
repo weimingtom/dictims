@@ -3,7 +3,7 @@
 <?php include('inc/md5.php'); ?>   
 <script language="javascript">
 <!--
-function DoEmpty(params)
+function doEmpty(params)
 {
 if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
 window.location = params ;
@@ -11,7 +11,7 @@ window.location = params ;
 //-->
 </script>
 <?php
-if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
+if (isset($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$sql = "delete from admin where id=" . $_REQUEST["id"];
 	mysql_query($sql, $con);
 	header('location:?action=list');
@@ -19,14 +19,14 @@ if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 }
 ?>
 <?php
-$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
-$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
-$username = !empty($_REQUEST["username"]) ? $_REQUEST["username"] : "";
-$password = !empty($_REQUEST["password1"]) ? $_REQUEST["password1"] : "";
+$action = isset($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
+$username = isset($_REQUEST["username"]) ? $_REQUEST["username"] : "";
+$password = isset($_REQUEST["password1"]) ? $_REQUEST["password1"] : "";
 if ($action == "yes") {
  	if ($id == "") {
    		$sql = "select username from admin where username='" .
-   		 	((!empty($_REQUEST["username"])) ? trim($_REQUEST["username"]) : "") . "'";
+   		 	((isset($_REQUEST["username"])) ? trim($_REQUEST["username"]) : "") . "'";
 		$result = mysql_query($sql, $con);
 		if ($result !== false) {
 		    $rsCheck = mysql_fetch_assoc($result);
@@ -148,7 +148,7 @@ if ($action == "list") {
           <td><?php if ($rs["id"] == 1) { ?>
           <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle">删除
           <?php } else { ?>
-          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
+          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
           <?php } ?></td>
         </tr>
 <?php

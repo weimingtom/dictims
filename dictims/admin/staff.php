@@ -1,31 +1,42 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
+if (isset($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$id = $_REQUEST["id"];
 	$idArr = explode(",", $id);
-	for ($i = 0; i < count($idArr); $i++) {
-		$sql = "delete from Staff where id=" . trim($idArr($i));
+	for ($i = 0; $i < count($idArr); $i++) {
+		$sql = "delete from Staff where id=" . trim($idArr[$i]);
 		mysql_query($sql, $con);
 	}
 }
 ?>
 <?php
-if (!empty($_REQUEST["work"]) and $_REQUEST["work"] == "del") {
+if (isset($_REQUEST["work"]) and $_REQUEST["work"] == "del") {
 	$sql = "delete from Staff where id=" . $_REQUEST["id"];
 	mysql_query($sql, $con);
 	header('location:?action=list');
+	exit;
 }
 ?>
 <?php
-$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
-$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
+$action = isset($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 if ($action == "yes") {
  	if ($id == "") {
 	   $sql = "select sid from staff where sid='" .
 	   		trim($_REQUEST["sid"]) . "'";
-	   if (!rsCheck) {
-	      die("<script language='javascript'>alert('职员工号" . trim($_REQUEST["sid"]) . " 已存在，请检查！');history.back(-1);</script>");
+	   $result = mysql_query($sql, $con);
+	   if ($result !== false) {
+	   		$rs = mysql_fetch_assoc($result);
+	   } else {
+	   		$rs = false;
+	   }
+	   if ($rs !== false) {
+	   		echo("<head>");
+			echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
+			echo("<script language='javascript'>alert('职员工号" . trim($_REQUEST["sid"]) . " 已存在，请检查！');history.back(-1);</script>");
+	   		echo("</head>");
+	   		exit;
 	   }
 	   $sql = "insert into staff (sid,pws,sname,state,idcard,sex,home,national,birth,marriage,political,political_date,culture,school,graduate,address,phone,email,im,department,jobs,duty,entrance,comment) values (" . 
 	   		"'" . $_REQUEST["sid"] . "'," .
@@ -78,13 +89,10 @@ if ($action == "yes") {
 	   		"entrance='" . $_REQUEST["entrance"] . "'," .
 	   		"comment='" . $_REQUEST["comment"] . "'" .
 	   	" where id=" . $id . ""; 
-	   //rs.open sql,conn,1,2
 	}
-
-	//rs.update
-	//rs.close
-	//set rs=nothing
+	mysql_query($sql, $con);
 	header('location:?action=list');
+	exit;
 }
 ?>
 <html>
@@ -100,7 +108,7 @@ if (e.name != 'chkall') e.checked = form.chkall.checked;
 }
 }
 
-function DoEmpty(params)
+function doEmpty(params)
 {
 if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
 window.location = params ;
@@ -140,26 +148,26 @@ function check() {
     }
     if (document.add.sex.value == "") {
       	alert("请填写职员性别！");
-      	document.add.sex.focus();
-      	document.add.sex.select();
+      	//document.add.sex.focus();
+      	//document.add.sex.select();
       	return;
 	} 
 	if (document.add.department.value == "") {
       	alert("请填写职员所在部门！");
       	document.add.department.focus();
-      	document.add.department.select();
+      	//document.add.department.select();
       	return;
     }
   	if (document.add.jobs.value == "") {
       	alert("请填写职员担任职务！");
       	document.add.jobs.focus();
-      	document.add.jobs.select();
+      	//document.add.jobs.select();
     	return;
     } 
-	if (document.add.Duty.value == "") {
+	if (document.add.duty.value == "") {
       	alert("请填写职员职称！");
       	document.add.duty.focus();
-      	document.add.duty.select();
+      	//document.add.duty.select();
       	return;
 	}
 	if (document.add.entrance.value == "") {
@@ -313,35 +321,43 @@ if ($action == "list") {
         </tr>
 		
 <?php
-		$sql = "select * from Staff order by id desc";
+		$sql = "select * from staff order by id desc";
 		$result = mysql_query($sql, $con);
-	    if ($result !== false) {
-	        $rs = mysql_fetch_assoc($result);
+		if ($result !== false) {
+	        $rsRows = mysql_num_rows($result);
+	    	$rs = true;
 	    } else {
-	        $rs = null;
+	        $rsRows = 0;
+	    	$rs = false;
 	    }
-		if (!$rs) {
- 			$proCount = $rs->recordcount;
-			$rs->pageSize = 10;	//定义显示数目
-		    if (!empty($_REQUEST["ToPage"])) {
-			    $toPage = intval(Request("ToPage"));
-				if ($toPage > $rs->pageCount) {
-				   $rs->absolutePage = $rs->pageCount;
-				   $intCurPage = $rs->pageCount;
+		if ($rs !== false) {
+ 			$proCount = $rsRows;
+			$rsPageSize = 10;	//定义显示数目
+		    $rsPageCount = ceil($rsRows / $rsPageSize);
+		    if (isset($_REQUEST["toPage"])) {
+			    $toPage = intval($_REQUEST["toPage"]);
+				if ($toPage > $rsPageCount) {
+				   $rsAbsolutePage = $rsPageCount;
+				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
+				   $intCurPage = $rsPageCount;
 				} else if ($ToPage <= 0) {
-				   $rs->absolutePage = 1;
+				   $rsAbsolutePage = 1;
+				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
 				   $intCurPage = 1;
 				} else {
-				   $rs->absolutePage = $toPage;
+				   $rsAbsolutePage = $toPage;
+				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
 				   $intCurPage = $toPage;
 				}
 			 } else {
-				$rs->absolutePage = 1;
+				$rsAbsolutePage = 1;
+				mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
 				$intCurPage = 1;
 			 }
 			 $intCurPage = intval($intCurPage);
-			 for ($i = 1; $i < $rs->pageSize; $i++) {
-				 if (!$rs) {     
+			 for ($i = 1; $i < $rsPageSize; $i++) {
+			 	 $rs = mysql_fetch_assoc($result);
+			     if ($rs === false) {     
 				 	break; 
 				 }
 ?>
@@ -354,10 +370,9 @@ if ($action == "list") {
           <td><?php echo($rs["department"]); ?></td>
           <td><?php echo($rs["jobs"]); ?></td>
           <td><?php echo($rs["state"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
 <?php
-				//rs.movenext 
 			}
 ?>
 		<tr bgcolor="#ffffff">
@@ -369,8 +384,8 @@ if ($action == "list") {
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="8"> 总共<font color="#ff0000"><?php echo($rs.PageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
-if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rs->pageCount); ?>"> 最后页</a><?php } ?></span></td>
+          <td colspan="8"> 总共<font color="#ff0000"><?php echo($rsPageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
+if ($intCurPage != $rsPageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rsPageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
 <?php
 	} else {
@@ -379,8 +394,7 @@ if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($
          <td colspan="8">对不起！目前数据库中还没有添加职员！</td>
         </tr>
 <?php
-		//rs.close
-		//set rs=nothing
+		mysql_close($con);
 	}
 ?>
       </table>
@@ -390,14 +404,14 @@ if ($intCurPage != $rs->pageCount) { ?><a href="?action=list&ToPage=<?php echo($
 ?>
 <?php
 if ($action == "edit") {
-	$sql="select * from staff where id=" . ((!empty($_REQUEST["id"]) ? $_REQUEST["id"] : "0"));
+	$sql="select * from staff where id=" . ((isset($_REQUEST["id"]) ? $_REQUEST["id"] : "0"));
     $result = mysql_query($sql, $con);
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
     } else {
-        $rs = null;
+        $rs = false;
     }
-	if (!$rs) {
+	if ($rs !== false) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
        <form id="add" name="add" method="post" action="staff.php">
@@ -416,10 +430,10 @@ if ($action == "edit") {
           <td width="10%" align="right">职员状态</td>
           <td width="15%">
 		  <select name="state" selfValue="职员状态">
-   		    <option value="在职" <?php if ($rs("state") == "在职") { echo("selected"); } ?>>在职</option>
-   		    <option value="离职" <?php if ($rs("state") == "离职") { echo("selected"); } ?>>离职</option>
-   		    <option value="产假" <?php if ($rs("state") == "产假") { echo("selected"); } ?>>产假</option>
-   		    <option value="休假" <?php if ($rs("state") == "休假") { echo("selected"); } ?>>休假</option>
+   		    <option value="在职" <?php if ($rs["state"] == "在职") { echo("selected"); } ?>>在职</option>
+   		    <option value="离职" <?php if ($rs["state"] == "离职") { echo("selected"); } ?>>离职</option>
+   		    <option value="产假" <?php if ($rs["state"] == "产假") { echo("selected"); } ?>>产假</option>
+   		    <option value="休假" <?php if ($rs["state"] == "休假") { echo("selected"); } ?>>休假</option>
   		  </select><font color="red">*</font></td>
         </tr>
         <tr bgcolor="#FFFFFF">
@@ -427,7 +441,7 @@ if ($action == "edit") {
           <td ><input name="idcard" type="text" id="idcard" value="<?php echo($rs["idcard"]); ?>" size="18">
             <font color="red">*</font></td>
           <td align="right">性别</td>
-          <td><input type="radio" name="sex" value="男"  <?php if ($rs["Sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
+          <td><input type="radio" name="sex" value="男"  <?php if ($rs["sex"] == "男") { echo("checked"); } ?>/>男 <input type="radio" name="sex" value="女"  <?php if ($rs["sex"] == "女") { echo("checked"); } ?> />女<font color="red">*</font></td>
           <td align="right">籍贯</td>
           <td><input name="home" type="text" id="home" value="<?php echo($rs["home"]); ?>"></td>
           <td align="right">民族</td>
@@ -467,13 +481,13 @@ if ($action == "edit") {
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><input name="address" type="text" id="address" value="<?php echo($rs["adress"]); ?>"></td>
+          <td><input name="address" type="text" id="address" value="<?php echo($rs["address"]); ?>"></td>
           <td align="right">联系电话</td>
           <td><input name="phone" type="text" id="phone" value="<?php echo($rs["phone"]); ?>"></td>
           <td align="right">Email</td>
-          <td><input name="email" type="text" id="email" value="<?php echo($rs["email"]); ?></td>
+          <td><input name="email" type="text" id="email" value="<?php echo($rs["email"]); ?>"></td>
           <td align="right">聊天号</td>
-          <td><input name="IM" type="text" id="IM" value="<?php echo($rs["im"]); ?></td>
+          <td><input name="IM" type="text" id="IM" value="<?php echo($rs["im"]); ?>"></td>
         </tr>
         <tr bgcolor="#F2FDFF">
           <td align="right"> 所在部门</td>
@@ -529,9 +543,9 @@ if ($action == "view") {
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
     } else {
-        $rs = null;
+        $rs = false;
     }
-	if (!$rs) {
+	if ($rs !== false) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
 		<tr align="center" bgcolor="#F2FDFF">
@@ -579,7 +593,7 @@ if ($action == "view") {
         </tr>
         <tr bgcolor="#FFFFFF">
           <td align="right"> 联系住址</td>
-          <td><?php echo($rs["addrss"]); ?></td>
+          <td><?php echo($rs["address"]); ?></td>
           <td align="right">联系电话</td>
           <td><?php echo($rs["phone"]); ?></td>
           <td align="right">Email</td>

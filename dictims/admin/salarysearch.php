@@ -1,10 +1,10 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-$syear = !empty($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
-$smonth = !empty($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
-$lx = !empty($_REQUEST["lx"]) ? trim($_REQUEST["lx"]) : "";
-$keywords = !empty($_REQUEST["keywords"]) ? trim($_REQUEST["keywords"]) : "";
+$syear = isset($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
+$smonth = isset($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
+$lx = isset($_REQUEST["lx"]) ? trim($_REQUEST["lx"]) : "";
+$keywords = isset($_REQUEST["keywords"]) ? trim($_REQUEST["keywords"]) : "";
 ?>
 <html>
 <head>
@@ -13,7 +13,7 @@ $keywords = !empty($_REQUEST["keywords"]) ? trim($_REQUEST["keywords"]) : "";
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language=JavaScript>
 <!--
-function DoEmpty(params)
+function doEmpty(params)
 {
 if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
 alert("删除信息成功\n 返回信息列表")
@@ -93,10 +93,10 @@ if ($keywords != "") {
 	if ($result !== false) {
 	    $rs = mysql_fetch_assoc($result);
 	} else {
-	    $rs = null;
+	    $rs = false;
 	}
-
- 	if (!$rs) {
+	
+ 	if ($rs !== false) {
     	do {
 ?>	
 		<tr align='center' bgcolor='#FFFFFF' onmouseover='this.style.background="#F2FDFF"' onmouseout='this.style.background="#FFFFFF"'>
@@ -105,7 +105,7 @@ if ($keywords != "") {
           <td><?php echo($rs["sid"]); ?></td>
           <td><?php echo($rs["sname"]); ?></td>
           <td><?php echo($rs["stotal"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('salary.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('salary.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
 <?php
     	} while ($rs = mysql_fetch_assoc($result));
 ?>

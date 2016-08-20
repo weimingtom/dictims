@@ -1,8 +1,8 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-$keywords = !empty($_REQUEST["keywords"]) ? $_REQUEST["keywords"] : "";
-$lx = !empty($_REQUEST["lx"]) ? $_REQUEST["lx"] : "";
+$keywords = isset($_REQUEST["keywords"]) ? $_REQUEST["keywords"] : "";
+$lx = isset($_REQUEST["lx"]) ? $_REQUEST["lx"] : "";
 ?>
 <html>
 <head>
@@ -11,7 +11,7 @@ $lx = !empty($_REQUEST["lx"]) ? $_REQUEST["lx"] : "";
 <link href="images/main.css" rel="stylesheet" type="text/css">
 <script language=JavaScript>
 <!--
-function DoEmpty(params)
+function doEmpty(params)
 {
 if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
 alert("删除信息成功\n 返回信息列表")
@@ -75,7 +75,7 @@ if ($keywords != "") {
           <td><?php echo($rs["department"]); ?></td>
           <td><?php echo($rs["jobs"]); ?></td>
           <td><?php echo($rs["state"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="staff.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="staff.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('staff.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="staff.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="staff.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('staff.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
 <?php
 		} while ($rs = mysql_fetch_assoc($result));
 ?>

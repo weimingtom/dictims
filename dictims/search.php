@@ -55,8 +55,8 @@
 					  </form>
                     </tr>
 <?php
-$syear = !empty($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
-$smonth = !empty($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
+$syear = isset($_REQUEST["syear"]) ? trim($_REQUEST["syear"]) : "";
+$smonth = isset($_REQUEST["smonth"]) ? trim($_REQUEST["smonth"]) : "";
 $sid = $_SESSION["userid"];
 $sql="select * from salary where 5 = 5";
 if ($syear != "") { //按类别显示

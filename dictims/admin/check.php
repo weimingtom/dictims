@@ -1,8 +1,8 @@
 <?php include('inc/conn.php'); ?> 
 <?php include('inc/md5.php'); ?> 
 <?php
-$verifycode = !empty($_SESSION['pSN']) ? $_SESSION['pSN'] : "";
-$verifycode2 = !empty($_REQUEST['verifycode']) ? trim($_REQUEST['verifycode']) : "";
+$verifycode = isset($_SESSION['pSN']) ? $_SESSION['pSN'] : "";
+$verifycode2 = isset($_REQUEST['verifycode']) ? trim($_REQUEST['verifycode']) : "";
 if ($verifycode != $verifycode2) {
     echo("<head>");
 	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
@@ -13,9 +13,9 @@ if ($verifycode != $verifycode2) {
     exit;
 } else {
     $_SESSION["pSN"] = "";
-    if (!empty($_REQUEST["action"]) and $_REQUEST["action"] == "login") {
-        $username = !empty($_REQUEST["admin_name"]) ? trim($_REQUEST["admin_name"]) : "";
-        $password = !empty($_REQUEST["admin_pass"]) ? trim($_REQUEST["admin_pass"]) : "";
+    if (isset($_REQUEST["action"]) and $_REQUEST["action"] == "login") {
+        $username = isset($_REQUEST["admin_name"]) ? trim($_REQUEST["admin_name"]) : "";
+        $password = isset($_REQUEST["admin_pass"]) ? trim($_REQUEST["admin_pass"]) : "";
     }
     if (strpos($username, "or") !== false or strpos($password, "or") !== false or 
         strpos($username, "and") !== false or strpos($password, "and") !== false) {
@@ -30,9 +30,9 @@ if ($verifycode != $verifycode2) {
         if ($result !== false) {
             $rs = mysql_fetch_assoc($result);
         } else {
-            $rs = null;
+            $rs = false;
         }
-        if (!$rs) {
+        if ($rs === false) {
             echo("<head>");
 			echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
 			echo("<script language='javaScript'>alert('您输入的用户名或密码有误。返回重新输入!');");

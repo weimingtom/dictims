@@ -2,7 +2,7 @@
 <?php include('images/conn.php'); ?>
 <?php
 $action = $_REQUEST["action"];
-$id = !empty($_SESSION["id"]) ? $_SESSION["id"] : "";
+$id = isset($_SESSION["id"]) ? $_SESSION["id"] : "";
 if ($action == "yes") {
     $sql="update Staff set pws = '". $_REQUEST["pws1"] . "' where id=". $id . ""; //更新数据表记录
 	echo("<script language='javascript'>alert('密码修改成功，请重新登录！');");
@@ -96,7 +96,7 @@ if ($action == "view") {
                       <td align=right height=30>担任职务：</td>
                       <td height=30><?php echo($rs["jobs"]);?></td>
 					</tr>
-                    <?php if (!empty($rs["luqu"]) and $rs["luqu"] == "录取") { ?>
+                    <?php if (isset($rs["luqu"]) and $rs["luqu"] == "录取") { ?>
                     <tr>
                       <td align=right height=30>职员职称：</td>
                       <td height=30><?php echo($rs["duty"]);?></td>
@@ -156,7 +156,7 @@ if ($action == "edit") {
                       <td align=right height=30>担任职务：</td>
                       <td height=30><?php echo($rs["jobs"]);?></td>
 					</tr>
-					<?php if (!empty($rs["luqu"]) and $rs["luqu"] == "录取") { ?>
+					<?php if (isset($rs["luqu"]) and $rs["luqu"] == "录取") { ?>
                     <tr>
                       <td align=right height=30>职员职称：</td>
                       <td height=30><?php echo($rs["duty"]);?></td>

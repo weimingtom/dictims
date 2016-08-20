@@ -4,7 +4,7 @@ include('images/conn.php');
 //echo("<script>alert('action=".$_REQUEST['action']."');window.close();</script>");
 //exit;
 
-if (!empty($_GET['action']) and $_REQUEST['action'] == 'login') {
+if (isset($_GET['action']) and $_REQUEST['action'] == 'login') {
     $checkcode = str_replace("'", "", trim($_REQUEST['checkcode']));
 
     if ($checkcode == "") {
@@ -14,14 +14,14 @@ if (!empty($_GET['action']) and $_REQUEST['action'] == 'login') {
 		echo("</head>");
 		exit;
     }
-    if (empty($_SESSION['checkcode']) or $_SESSION['checkcode'] == "") {
+    if (!isset($_SESSION['checkcode']) or $_SESSION['checkcode'] == "") {
        	echo("<head>");
     	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
     	echo("<script>alert('验证码失效，请重新输入！');location.href='index.php'</script>");
     	echo("</head>");
 		exit;
     }
-    if (!empty($_SESSION['checkcode']) and $checkcode != $_SESSION['checkcode']) {
+    if (isset($_SESSION['checkcode']) and $checkcode != $_SESSION['checkcode']) {
         echo("<head>");
     	echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
     	echo("<script>alert('您输入的验证码与系统产生的不一致，请重新输入！');location.href='index.php'</script>");
@@ -52,9 +52,9 @@ if (strpos($sid, "or") !== false or strpos($idcard, "or") !== false or strpos($p
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
     } else {
-        $rs = null;
+        $rs = false;
     }
-    if (!$rs) {
+    if ($rs === false) {
         echo("<head>");
 		echo("<meta http-equiv='Content-type' content='text/html; charset=utf-8'>");
 		echo("<script language='javascript'>alert('对不起，工号或身份证号不匹配!\\n \\n请检查，返回重新输入！');");

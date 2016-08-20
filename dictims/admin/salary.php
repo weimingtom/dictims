@@ -1,18 +1,18 @@
 <?php include('inc/right.php'); ?> 
 <?php include('inc/conn.php'); ?> 
 <?php
-if (!empty($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
+if (isset($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$id = $_REQUEST["id"];
 	$idArr = explode(",", $id);
 	for ($i = 0; $i < count(idArr); $i++) {
-		$sql = "delete from Salary where id=" . trim($idArr[i]);
+		$sql = "delete from Salary where id=" . trim($idArr[$i]);
 		mysql_query($sql, $con);
 	}
 }
 ?>
 <?php
-$action = !empty($_REQUEST["action"]) ? $_REQUEST["action"] : "";
-$id = !empty($_REQUEST["id"]) ? $_REQUEST["id"] : "";
+$action = isset($_REQUEST["action"]) ? $_REQUEST["action"] : "";
+$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 if ($action == "yes") {
 	if ($id == "") {
 		$sql = "select syear,smonth,sname from salary where syear='" .
@@ -79,7 +79,7 @@ if (e.name != 'chkall') e.checked = form.chkall.checked;
 }
 }
 
-function DoEmpty(params)
+function doEmpty(params)
 {
 if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
 window.location = params ;
@@ -242,12 +242,12 @@ if ($action == "list") {
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
     } else {
-        $rs = null;
+        $rs = false;
     }
- 	if (!$rs) {
+ 	if ($rs === false) {
  		$proCount = $rs.recordcount;
 		$rs->pageSize = 15; // 定义显示数目
-	    if (!empty($_REQUEST["ToPage"])) {
+	    if (isset($_REQUEST["ToPage"])) {
 		    $toPage = intval($_REQUEST["ToPage"]);
 			if ($toPage > $rs->pageCount) {
 			   $rs->AbsolutePage = $rs->pageCount;
@@ -265,7 +265,7 @@ if ($action == "list") {
 		 }
 		 $intCurPage = intval($intCurPage);
 		 for ($i = 1; i < $rs->pageSize; $i++) {
-			 if (!$rs) {     
+			 if ($rs === false) {     
 			 	break; 
 			 }
 ?>
@@ -277,10 +277,10 @@ if ($action == "list") {
           <td><?php echo($rs["sid"]); ?></td>
           <td><?php echo($rs["sname"]); ?></td>
           <td><?php echo($rs["stotal"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:DoEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
 <?php
-			//rs.movenext 
+			$rs = mysql_fetch_assoc($result);
 		}
 ?>
 		<tr bgcolor="#ffffff">
@@ -387,9 +387,9 @@ if ($action == "edit") {
     if ($result !== false) {
         $rs = mysql_fetch_assoc($result);
     } else {
-        $rs = null;
+        $rs = false;
     }
-	if (!$rs) {
+	if ($rs === false) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form id="add" name="add" method="post" action="salary.php">

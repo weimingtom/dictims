@@ -64,7 +64,7 @@ if ($action == "yes") {
 	   		"'" . $_REQUEST["entrance"] . "'," .
 	   		"'" . $_REQUEST["comment"] . "')";
 	} else {
-	   $sql="update from staff set " . 	   		"'" . $_REQUEST["sid"] . "'," .
+	   $sql="update staff set sid='" . $_REQUEST["sid"] . "'," .
 	   		"pws='" . $_REQUEST["pws"] . "'," .
 	   		"sname='" . $_REQUEST["sname"] . "'," .
 	   		"state='" . $_REQUEST["state"] . "'," .
@@ -100,21 +100,23 @@ if ($action == "yes") {
 <title>员工工资信息管理系统</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
-<script language=JavaScript type=text/JavaScript>
-function CheckAll(form)
-{for (var i=0;i<form.elements.length;i++){
-var e = form.elements[i];
-if (e.name != 'chkall') e.checked = form.chkall.checked;
-}
+<script language="javascript" type="text/javascript">
+function checkAll(form) {
+	for (var i=0;i<form.elements.length;i++){
+		var e = form.elements[i];
+		if (e.name != 'chkall') {
+			e.checked = form.chkall.checked;
+		}
+	}
 }
 
-function doEmpty(params)
-{
-if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
-window.location = params ;
+function doEmpty(params) {
+	if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！")) {
+		window.location = params;
+	}
 }
 </script>
-<script language=JavaScript type=text/JavaScript>
+<script language="javascript" type="text/javascript">
 function check() {
   	if (document.add.sid.value == "") {
       	alert("请填写职员工号！");
@@ -297,8 +299,8 @@ if ($action == "add") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="8" ><input type="hidden" name="action" value="yes">
-              <input type="button" name="submit_btn" value="提交" onClick="check()">
-              <input type="button" name="submit22" value="返回" onClick="history.back(-1)"></td>
+              <input type="button" name="submit_btn" value="提交" onclick="check()">
+              <input type="button" name="submit22" value="返回" onclick="history.back(-1)"></td>
         </tr>
       </form>
 	  </table>
@@ -334,28 +336,28 @@ if ($action == "list") {
  			$proCount = $rsRows;
 			$rsPageSize = 10;	//定义显示数目
 		    $rsPageCount = ceil($rsRows / $rsPageSize);
-		    if (isset($_REQUEST["toPage"])) {
-			    $toPage = intval($_REQUEST["toPage"]);
+			if (isset($_REQUEST["topage"])) {
+			    $toPage = intval($_REQUEST["topage"]);
 				if ($toPage > $rsPageCount) {
-				   $rsAbsolutePage = $rsPageCount;
-				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
-				   $intCurPage = $rsPageCount;
-				} else if ($ToPage <= 0) {
-				   $rsAbsolutePage = 1;
-				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
-				   $intCurPage = 1;
+				   	$rsAbsolutePage = $rsPageCount;
+				   	mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+				   	$intCurPage = $rsPageCount;
+				} else if ($toPage <= 0) {
+				   	$rsAbsolutePage = 1;
+					mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+				   	$intCurPage = 1;
 				} else {
-				   $rsAbsolutePage = $toPage;
-				   mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
-				   $intCurPage = $toPage;
+				   	$rsAbsolutePage = $toPage;
+				   	mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+				   	$intCurPage = $toPage;
 				}
 			 } else {
 				$rsAbsolutePage = 1;
-				mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageCount);
+				mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
 				$intCurPage = 1;
 			 }
 			 $intCurPage = intval($intCurPage);
-			 for ($i = 1; $i < $rsPageSize; $i++) {
+			 for ($i = 0; $i < $rsPageSize; $i++) {
 			 	 $rs = mysql_fetch_assoc($result);
 			     if ($rs === false) {     
 				 	break; 
@@ -370,22 +372,22 @@ if ($action == "list") {
           <td><?php echo($rs["department"]); ?></td>
           <td><?php echo($rs["jobs"]); ?></td>
           <td><?php echo($rs["state"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><img src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
 <?php
 			}
 ?>
 		<tr bgcolor="#ffffff">
 		  <td colspan="8">&nbsp;&nbsp;
-		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
+		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick="checkAll(this.form)"> 全选
 		   <input name="wor" type="hidden" id="wor" value="del" />
-		   <input type="submit" name="submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
+		   <input type="submit" name="submit3" value="删除所选" onclick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
 		  </td>
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="8"> 总共<font color="#ff0000"><?php echo($rsPageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
-if ($intCurPage != $rsPageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rsPageCount); ?>"> 最后页</a><?php } ?></span></td>
+          <td colspan="8"> 总共<font color="#ff0000"><?php echo($rsPageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>个职员, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&topage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
+if ($intCurPage != $rsPageCount) { ?><a href="?action=list&topage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&topage=<?php echo($rsPageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
 <?php
 	} else {
@@ -525,8 +527,8 @@ if ($action == "edit") {
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">
 		  <input type="hidden" name="action" value="yes">
-          <input type="button" name="submit2" value="提交" onClick="check()">
-          <input type="button" name="submit2" value="返回" onClick="history.back(-1)">
+          <input type="button" name="submit2" value="提交" onclick="check()">
+          <input type="button" name="submit2" value="返回" onclick="history.back(-1)">
 		  <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">		  </td>
 		</tr>
   		</form>
@@ -617,7 +619,7 @@ if ($action == "view") {
         </tr>
 		<tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="12">
-          <input type="button" name="submit2" value="返回" onClick="history.back(-1)">		  </td>
+          <input type="button" name="submit2" value="返回" onclick="history.back(-1)">		  </td>
 		</tr>
   	</table>
 <?php

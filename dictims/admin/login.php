@@ -10,7 +10,7 @@ body {FONt-SIZE: 12px; BACKGROUND: #E8F2FB; COLOR: #333; MARGIN: 80px;}
 	BORDER-RIGHT: #0033cc 1px solid; BORDER-TOP: #00ccff 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #00ccff 1px solid; CURSOR: hand; COLOR: #ffffff; BORDER-BOTTOM: #0033cc 1px solid; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #0099ff
 }
 </STYLE>
-<script language="JavaScript">
+<script language="javascript">
 <!--
 function chk(theForm)
 {
@@ -46,7 +46,7 @@ return true;
             <table height="100%" cellSpacing=0 cellPadding=0 width="100%" border=0>
               <tbody>
               <tr>
-                <td align=middle width="40%"><IMG height=90 src="images/login.gif" width=91></td>
+                <td align=middle width="40%"><img height=90 src="images/login.gif" width=91></td>
                 <td>
                   <table cellSpacing=1 cellPadding=2 width="100%" align=center border=0>
                     <tbody>

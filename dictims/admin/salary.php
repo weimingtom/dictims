@@ -71,21 +71,23 @@ if ($action == "yes") {
 <title>员工工资信息管理系统</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="images/main.css" rel="stylesheet" type="text/css">
-<script language=JavaScript type=text/JavaScript>
-function CheckAll(form)
-{for (var i=0;i<form.elements.length;i++){
-var e = form.elements[i];
-if (e.name != 'chkall') e.checked = form.chkall.checked;
-}
+<script language="javascript" type="text/javascript">
+function checkAll(form) {
+	for (var i=0;i<form.elements.length;i++){
+		var e = form.elements[i];
+		if (e.name != 'chkall') {
+			e.checked = form.chkall.checked;
+		}
+	}
 }
 
-function doEmpty(params)
-{
-if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
-window.location = params ;
+function doEmpty(params) {
+	if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！")) {
+		window.location = params ;
+	}
 }
 </script>
-<script language=JavaScript type=text/JavaScript>
+<script language="javascript" type="text/javascript">
 <!--
 function check()
 {
@@ -211,8 +213,8 @@ if ($action == "add") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
-              <input type="button" name="submit_btn" value="提交" onClick="check()">
-              <input type="button" name="submit_btn2" value="返回" onClick="history.back(-1)"></td>
+              <input type="button" name="submit_btn" value="提交" onclick="check()">
+              <input type="button" name="submit_btn2" value="返回" onclick="history.back(-1)"></td>
         </tr>
       </form>
 	  </table>
@@ -247,8 +249,8 @@ if ($action == "list") {
  	if ($rs === false) {
  		$proCount = $rs.recordcount;
 		$rs->pageSize = 15; // 定义显示数目
-	    if (isset($_REQUEST["ToPage"])) {
-		    $toPage = intval($_REQUEST["ToPage"]);
+	    if (isset($_REQUEST["topage"])) {
+		    $toPage = intval($_REQUEST["topage"]);
 			if ($toPage > $rs->pageCount) {
 			   $rs->AbsolutePage = $rs->pageCount;
 			   $intCurPage = $rs->pageCount;
@@ -277,7 +279,7 @@ if ($action == "list") {
           <td><?php echo($rs["sid"]); ?></td>
           <td><?php echo($rs["sname"]); ?></td>
           <td><?php echo($rs["stotal"]); ?></td>
-          <td><IMG src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&ToPage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><img src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
 <?php
 			$rs = mysql_fetch_assoc($result);
@@ -285,17 +287,17 @@ if ($action == "list") {
 ?>
 		<tr bgcolor="#ffffff">
 		  <td colspan="12">&nbsp;&nbsp;
-		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick=CheckAll(this.form)> 全选
+		   <input name="chkall" type="checkbox" id="chkall" value="select" onclick="checkAll(this.form)"> 全选
 		   <input name="wor" type="hidden" id="wor" value="del" />
-		   <input type="submit" name="submit3" value="删除所选" onClick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
+		   <input type="submit" name="submit3" value="删除所选" onclick="{if(confirm('确定要删除记录吗？删除后将被无法恢复！')){return true;}return false;}" />
 		  </td>
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="7"> 总共：<font color="#ff0000"><?php echo($rs.pageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>条工资信息, 当前页：<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&ToPage=<?php echo($intCurPage - 1); ?>">上一页</a>|
+          <td colspan="7"> 总共：<font color="#ff0000"><?php echo($rs.pageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>条工资信息, 当前页：<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&topage=<?php echo($intCurPage - 1); ?>">上一页</a>|
 <?php
 		}
-		if ($intCurPage != $rs.pageCount) { ?><a href="?action=list&ToPage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&ToPage=<?php echo($rs.PageCount); ?>"> 最后页</a><?php } ?></span></td>
+		if ($intCurPage != $rs.pageCount) { ?><a href="?action=list&topage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&topage=<?php echo($rs.PageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
 <?php
 	} else {
@@ -371,7 +373,7 @@ if ($action == "view") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td colspan="10" >
-              <input type="button" name="submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
+              <input type="button" name="submit4" value="返回" onclick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
 	  </table>
 <?php
@@ -440,8 +442,8 @@ if ($action == "edit") {
         </tr>
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="10" ><input type="hidden" name="action" value="yes">
-           <input type="button" name="submit3" value="提交" onClick="check()">
-           <input type="button" name="submit4" value="返回" onClick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
+           <input type="button" name="submit3" value="提交" onclick="check()">
+           <input type="button" name="submit4" value="返回" onclick="history.back(-1)"><input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>"></td>
         </tr>
       </form>
 	  </table>

@@ -112,7 +112,7 @@ if ($action == "view") {
 					</tr>
 					<tr>
                       <td height=30 colspan="2" align=center>
-					  <input type="button" name="Submit2" value="返回" onClick="history.back(-1)"></td>
+					  <input type="button" name="submit2" value="返回" onclick="history.back(-1)"></td>
                       </tr>
 				   </table>
 <?php
@@ -176,8 +176,8 @@ if ($action == "edit") {
 					</tr>
 					<tr>
                       <td height=30 colspan="2" align=center><input type="hidden" name="action" value="yes">
-          <input type="button" name="Submit2" value="修改" onClick="check()">
-          <input type="button" name="Submit2" value="返回" onClick="history.back(-1)">
+          <input type="button" name="Submit2" value="修改" onclick="check()">
+          <input type="button" name="Submit2" value="返回" onclick="history.back(-1)">
 		  <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]);?>">	</td>
                       </tr>
 					  </form>

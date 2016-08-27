@@ -3,10 +3,10 @@
 <?php include('inc/md5.php'); ?>   
 <script language="javascript">
 <!--
-function doEmpty(params)
-{
-if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！"))
-window.location = params ;
+function doEmpty(params) {
+	if (confirm("真的要删除这条记录吗？删除后此记录里的所有内容都将被删除并且无法恢复！")) {
+		window.location = params;
+	}
 }
 //-->
 </script>
@@ -114,8 +114,8 @@ if ($action == "add") {
         <tr align="center" bgcolor="#ebf0f7">
           <td  colspan="2" >
 		     <INPUT TYPE="hidden" name="action" value="yes">
-            <input type="button" name="submit_btn" value="提交" onClick="check()">
-          	<input type="button" name="submit_btn2" value="返回" onClick="history.back(-1)"></td>
+            <input type="button" name="submit_btn" value="提交" onclick="check()">
+          	<input type="button" name="submit_btn2" value="返回" onclick="history.back(-1)"></td>
         </tr>
 		</form>
       </table> 
@@ -146,9 +146,9 @@ if ($action == "list") {
           <td><?php echo($rs["username"]); ?></td>
           <td><?php echo($rs["password"]); ?></td>
           <td><?php if ($rs["id"] == 1) { ?>
-          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <IMG src="images/drop.gif" align="absmiddle">删除
+          <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle">删除
           <?php } else { ?>
-          <IMG src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <IMG src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
+          <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a>  <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?wor=del&id=<?php echo($rs["id"]); ?>')">删除</a>
           <?php } ?></td>
         </tr>
 <?php
@@ -192,8 +192,8 @@ if ($action == "edit") {
 		</tr>
 	    <tr align="center" bgcolor="#ebf0f7">
 		  <td colspan="2">
-		   <input type="hidden" name="action" value="yes"> <input type="button" name="submit_btn" value="提交" onClick="check()">
-           <input type="button" name="submit_btn2"value="返回" onClick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">
+		   <input type="hidden" name="action" value="yes"> <input type="button" name="submit_btn" value="提交" onclick="check()">
+           <input type="button" name="submit_btn2"value="返回" onclick="history.back(-1)"> <input name="id" type="hidden" id="id" value="<?php echo($rs["id"]); ?>">
 		 </td>
 	   </tr>
   	 </form>

@@ -2,7 +2,7 @@
 <?php include('inc/conn.php'); ?> 
 <?php
 if (isset($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
-	$id = $_REQUEST["id"];
+	$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
 	$idArr = explode(",", $id);
 	for ($i = 0; $i < count($idArr); $i++) {
 		$sql = "delete from Staff where id=" . trim($idArr[$i]);
@@ -26,6 +26,7 @@ if ($action == "yes") {
 	   $sql = "select sid from staff where sid='" .
 	   		trim($_REQUEST["sid"]) . "'";
 	   $result = mysql_query($sql, $con);
+	   $rs = false;
 	   if ($result !== false) {
 	   		$rs = mysql_fetch_assoc($result);
 	   } else {

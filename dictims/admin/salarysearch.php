@@ -36,7 +36,7 @@ function doEmpty(params) {
 			请选择查询信息：
 			<select name="syear">
 			<option value="">-请选择年份-</option>
-			<?php for($y = 2011; $y <= 2012; $y++) { ?>
+			<?php for($y = 2013; $y <= intval(date("Y")); $y++) { ?>
 			<option value="<?php echo($y); ?>"><?php echo($y); ?></option>
 			<?php } ?>
 			</select>
@@ -47,8 +47,8 @@ function doEmpty(params) {
 			<?php } ?>
 			</select>
 			<select name="lx">
-             <option value="Sname">职员姓名</option>
-             <option value="Sid">职员工号</option>
+             <option value="sname">职员姓名</option>
+             <option value="sid">职员工号</option>
             </select>
 			<input name="keywords" type="text" id="keywords" size="30"> 
             <input name="query" type="submit" id="query" value="查 询"></td>
@@ -82,7 +82,7 @@ if ($keywords != "") {
 		$sql = $sql . " and smonth='" . $smonth . "' ";
  	}
  	if ($lx == "sid") {
-		$sql = $sql . " and sid like '%" . keywords . "%' ";
+		$sql = $sql . " and sid like '%" . $keywords . "%' ";
  	}
  	if ($lx == "sname") {
 		$sql = $sql . " and sname like '%" . $keywords . "%' ";
@@ -105,7 +105,7 @@ if ($keywords != "") {
           <td><?php echo($rs["sid"]); ?></td>
           <td><?php echo($rs["sname"]); ?></td>
           <td><?php echo($rs["stotal"]); ?></td>
-          <td><img src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('salary.php?work=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><img src="images/view.gif" align="absmiddle"><a href="salary.php?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="salary.php?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('salary.php?wor=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
 <?php
     	} while ($rs = mysql_fetch_assoc($result));
 ?>

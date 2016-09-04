@@ -4,7 +4,7 @@
 if (isset($_REQUEST["wor"]) and $_REQUEST["wor"] == "del") {
 	$id = $_REQUEST["id"];
 	$idArr = explode(",", $id);
-	for ($i = 0; $i < count(idArr); $i++) {
+	for ($i = 0; $i < count($idArr); $i++) {
 		$sql = "delete from Salary where id=" . trim($idArr[$i]);
 		mysql_query($sql, $con);
 	}
@@ -23,15 +23,16 @@ if ($action == "yes") {
 			 trim($_REQUEST["sid"]) .
 			 "'";
 		$result = mysql_query($sql, $con);
+		$rsCheck = false;
 		if ($result !== false) {
 		    $rsCheck = mysql_fetch_assoc($result);
 		} else {
 		    $rsCheck = null;
 		}
-	    if (!rsCheck) {
+	    if ($rsCheck === false) {
 	      	die("<script language='javascript'>alert(' " . trim($_REQUEST["syear"]) . "年" . trim($_REQUEST["Smonth"]) . "月 " . trim($_REQUEST["sname"]) . " 工资已存在，请检查！');history.back(-1);</script>");
 	    }
-	   	$sql = "insert into salary (sid,sname,syear,smonth,basic,perform,jt,bt,gjj,lb,yb,qt,stotal,addtime) values (" .
+	   	$sql = "insert into salary (sid,sname,syear,smonth,basic,perform,jt,bt,gjj,lb,yb,qt,stotal,`addtime`) values (" .
 			"'" . $_REQUEST["sid"] . "'," .
 			"'" . $_REQUEST["sname"] . "'," .
 			"'" . $_REQUEST["syear"] . "'," .
@@ -40,6 +41,7 @@ if ($action == "yes") {
 			"'" . $_REQUEST["perform"] . "'," .
 			"'" . $_REQUEST["jt"] . "'," .
 			"'" . $_REQUEST["bt"] . "'," .
+			"'" . $_REQUEST["gjj"] . "'," .
 			"'" . $_REQUEST["lb"] . "'," .
 			"'" . $_REQUEST["yb"] . "'," .
 			"'" . $_REQUEST["qt"] . "'," .
@@ -55,15 +57,18 @@ if ($action == "yes") {
 			"perform='" . $_REQUEST["perform"] . "'," .
 			"jt='" . $_REQUEST["jt"] . "'," .
 			"bt='" . $_REQUEST["bt"] . "'," .
+			"gjj='" . $_REQUEST["gjj"] . "'," .
 			"lb='" . $_REQUEST["lb"] . "'," .
 			"yb='" . $_REQUEST["yb"] . "'," .
 			"qt='" . $_REQUEST["qt"] . "'," .
 			"stotal='" . $_REQUEST["stotal"] . "'," .
-			"addtime='" . $_REQUEST["addtime"] . " " .
+			"`addtime`='" . $_REQUEST["addtime"] . "' " .
 	   		" where id=" . $id . ""; 
 	}
 	mysql_query($sql, $con);
+	//echo($sql);
 	header('location:?action=list');
+	exit;
 }
 ?>
 <html>
@@ -89,71 +94,59 @@ function doEmpty(params) {
 </script>
 <script language="javascript" type="text/javascript">
 <!--
-function check()
-{
-  if (document.add.Sid.value=="")
-     {
-      alert("请填写职员工号！")
-      document.add.Sid.focus()
-      document.add.Sid.select()
-      return
-     }
-
-  if (document.add.Sname.value=="")
-     {
-      alert("请填写职员姓名！")
-      document.add.Sname.focus()
-      document.add.Sname.select()
-      return
-     }
-	 
-  if (document.add.Syear.value=="")
-     {
-      alert("请填写工资年份！")
-      document.add.Syear.focus()
-      document.add.Syear.select()
-      return
-     }
-	 
-  if (document.add.Smonth.value=="")
-     {
-      alert("请填写工资月份！")
-      document.add.Smonth.focus()
-      document.add.Smonth.select()
-      return
-     }
-	 
-  if (document.add.Basic.value=="")
-     {
-      alert("请填写基本工资！")
-      document.add.Basic.focus()
-      document.add.Basic.select()
-      return
-     }
-	 
-  if (document.add.Stotal.value=="")
-     {
-      alert("请填写工资合计！")
-      document.add.Stotal.focus()
-      document.add.Stotal.select()
-      return
-     }
-	 	 
-     document.add.submit()
+function check() {
+	if (document.add.sid.value=="") {
+    	alert("请填写职员工号！");
+      	document.add.sid.focus();
+      	document.add.sid.select();
+      	return;
+  	}
+  	if (document.add.sname.value=="") {
+     	alert("请填写职员姓名！");
+      	document.add.sname.focus();
+      	document.add.sname.select();
+      	return;
+  	}
+  	if (document.add.syear.value=="") {
+      	alert("请填写工资年份！");
+      	document.add.syear.focus();
+      	document.add.syear.select();
+      	return;
+    }
+  	if (document.add.smonth.value=="") {
+      	alert("请填写工资月份！");
+      	document.add.smonth.focus();
+      	document.add.smonth.select();
+      	return;
+	}
+  	if (document.add.basic.value=="") {
+      	alert("请填写基本工资！");
+      	document.add.Basic.focus();
+      	document.add.Basic.select();
+      	return;
+    }
+	if (document.add.stotal.value=="") {
+      	alert("请填写工资合计！");
+      	document.add.stotal.focus();
+      	document.add.stotal.select();
+      	return;
+	}	 
+	document.add.submit();
 }
 
- function changeN()
- {
-  add.spec.disabled=true;
- }
- function changeY()
- {
-  add.spec.disabled=false;
- }
- function next()
- {
-  if(event.keyCode==13)event.keyCode=9;
- }
+function changeN() {
+	add.spec.disabled=true;
+}
+ 
+function changeY() {
+  	add.spec.disabled=false;
+}
+ 
+function next() {
+  	if(event.keyCode==13) {
+		event.keyCode=9;
+  	}
+}
 -->
 </script>
 </head>
@@ -242,32 +235,40 @@ if ($action == "list") {
 	$sql="select * from salary order by id desc";
     $result = mysql_query($sql, $con);
     if ($result !== false) {
+    	$rsRows = mysql_num_rows($result);
         $rs = mysql_fetch_assoc($result);
     } else {
+    	$rsRows = 0;
         $rs = false;
     }
- 	if ($rs === false) {
- 		$proCount = $rs.recordcount;
-		$rs->pageSize = 15; // 定义显示数目
-	    if (isset($_REQUEST["topage"])) {
+ 	if ($rs !== false) {
+ 		$proCount = $rsRows;
+		$rsPageSize = 15; // 定义显示数目
+		$rsPageCount = ceil($rsRows / $rsPageSize);
+		if (isset($_REQUEST["topage"])) {
 		    $toPage = intval($_REQUEST["topage"]);
-			if ($toPage > $rs->pageCount) {
-			   $rs->AbsolutePage = $rs->pageCount;
-			   $intCurPage = $rs->pageCount;
-			} else if (toPage <= 0) {
-			   $rs->absolutePage = 1;
-			   $intCurPage = 1;
+			if ($toPage > $rsPageCount) {
+			   	$rsAbsolutePage = $rsPageCount;
+			   	mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+			   	$intCurPage = $rsPageCount;
+			} else if ($toPage <= 0) {
+			   	$rsAbsolutePage = 1;
+				mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+			   	$intCurPage = 1;
 			} else {
-			   $rs->absolutePage = $toPage;
-			   $intCurPage = $toPage;
+			   	$rsAbsolutePage = $toPage;
+			   	mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
+			   	$intCurPage = $toPage;
 			}
 		 } else {
-			$rs->absolutePage = 1;
+			$rsAbsolutePage = 1;
+			mysql_data_seek($result, ($rsAbsolutePage - 1) * $rsPageSize);
 			$intCurPage = 1;
 		 }
 		 $intCurPage = intval($intCurPage);
-		 for ($i = 1; i < $rs->pageSize; $i++) {
-			 if ($rs === false) {     
+		 for ($i = 0; $i < $rsPageSize; $i++) {
+		 	 $rs = mysql_fetch_assoc($result);
+		     if ($rs === false) {     
 			 	break; 
 			 }
 ?>
@@ -279,10 +280,9 @@ if ($action == "list") {
           <td><?php echo($rs["sid"]); ?></td>
           <td><?php echo($rs["sname"]); ?></td>
           <td><?php echo($rs["stotal"]); ?></td>
-          <td><img src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?work=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
+          <td><img src="images/view.gif" align="absmiddle"><a href="?action=view&id=<?php echo($rs["id"]); ?>">详细</a> <img src="images/edit.gif" align="absmiddle"><a href="?action=edit&id=<?php echo($rs["id"]); ?>">修改</a> <img src="images/drop.gif" align="absmiddle"><a href="javascript:doEmpty('?wor=del&id=<?php echo($rs["id"]); ?>&action=list&topage=<?php echo($intCurPage); ?>')">删除</a></td>
         </tr>
 <?php
-			$rs = mysql_fetch_assoc($result);
 		}
 ?>
 		<tr bgcolor="#ffffff">
@@ -294,10 +294,8 @@ if ($action == "list") {
 		</tr>
 		</form>
         <tr align="center" bgcolor="#ebf0f7">
-          <td colspan="7"> 总共：<font color="#ff0000"><?php echo($rs.pageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>条工资信息, 当前页：<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&topage=<?php echo($intCurPage - 1); ?>">上一页</a>|
-<?php
-		}
-		if ($intCurPage != $rs.pageCount) { ?><a href="?action=list&topage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&topage=<?php echo($rs.PageCount); ?>"> 最后页</a><?php } ?></span></td>
+          <td colspan="7"> 总共：<font color="#ff0000"><?php echo($rsPageCount); ?></font>页, <font color="#ff0000"><?php echo($proCount); ?></font>条工资信息, 当前页<font color="#ff0000"><?php echo($intCurPage); ?> </font><?php if ($intCurPage != 1) { ?><a href="?action=list">首页</a>|<a href="?action=list&topage=<?php echo($intCurPage - 1); ?>">上一页</a>|<?php }
+if ($intCurPage != $rsPageCount) { ?><a href="?action=list&topage=<?php echo($intCurPage + 1); ?>">下一页</a>|<a href="?action=list&topage=<?php echo($rsPageCount); ?>"> 最后页</a><?php } ?></span></td>
         </tr>
 <?php
 	} else {
@@ -306,9 +304,7 @@ if ($action == "list") {
           <td colspan="7">对不起！目前数据库中还没有添加职员工资！</td>
         </tr>
 <?php
-	//rs.close
-	//set rs=nothing
-}
+	}
 ?>
       </table>
 	  <br>
@@ -391,7 +387,7 @@ if ($action == "edit") {
     } else {
         $rs = false;
     }
-	if ($rs === false) {
+	if ($rs !== false) {
 ?>
 	  <table width="98%"  border="0" align="center" cellpadding="4" cellspacing="1" bgcolor="#aec3de">
       <form id="add" name="add" method="post" action="salary.php">
@@ -433,7 +429,7 @@ if ($action == "edit") {
           <td><input name="gjj" type="text" id="gjj" onKeyDown="next()" value="<?php echo($rs["gjj"]); ?>" size="10" maxlength="6" ></td>
           <td><input name="lb" type="text" id="lb" onKeyDown="next()" value="<?php echo($rs["lb"]); ?>" size="10" maxlength="6" ></td>
           <td><input name="yb" type="text" id="yb" onKeyDown="next()" value="<?php echo($rs["yb"]); ?>" size="10" maxlength="6" ></td>
-          <td><input name="gt" type="text" id="qt" onKeyDown="next()" value="<?php echo($rs["qt"]); ?>" size="10" maxlength="6" ></td>
+          <td><input name="qt" type="text" id="qt" onKeyDown="next()" value="<?php echo($rs["qt"]); ?>" size="10" maxlength="6" ></td>
           <td><input name="stotal" type="text" id="stotal" onKeyDown="next()" value="<?php echo($rs["stotal"]); ?>" size="10" maxlength="10" ></td>
 	    </tr>
         <tr bgcolor='#FFFFFF'>
